@@ -9,3 +9,11 @@
 - PostgreSQL and Liquibase configuration.
 - H2 support for tests.
 - Context test.
+
+## [0.1.0-SNAPSHOT] - 2026-06-14
+### Added
+- Spring Security integration (Iteration 1).
+- `SecurityConfig` with `SecurityFilterChain`.
+- In-memory authentication with `UserDetailsService`.
+- `PrivateHelloController` for testing protected endpoints.
+- Security integration tests.

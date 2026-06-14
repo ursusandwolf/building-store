@@ -7,7 +7,12 @@ com.example.buildstore
 ├── common
 │   ├── api
 │   │   └── HealthController
+│   ├── controller
+│   │   └── PrivateHelloController
 │   └── exception
 │       ├── ErrorResponse
 │       └── GlobalExceptionHandler
+└── security
+    └── config
+        └── SecurityConfig
 ```

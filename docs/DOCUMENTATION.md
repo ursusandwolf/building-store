@@ -3,6 +3,7 @@
 ## API Endpoints
 - `GET /api/public/health`: Returns application status.
 - `GET /api/public/version`: Returns project version.
+- `GET /api/private/hello`: Returns a greeting (requires Authentication).
 
 ## Configuration
 - `application.yml`: Main configuration.
