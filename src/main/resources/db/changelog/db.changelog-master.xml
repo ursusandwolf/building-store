@@ -5,4 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
 
+    <include file="db/changelog/migrations/v001-create-users-and-roles.xml"/>
+
 </databaseChangeLog>

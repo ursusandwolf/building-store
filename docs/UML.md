@@ -12,7 +12,18 @@ com.example.buildstore
 │   └── exception
 │       ├── ErrorResponse
 │       └── GlobalExceptionHandler
-└── security
-    └── config
-        └── SecurityConfig
+├── security
+│   ├── config
+│   │   └── SecurityConfig
+│   └── service
+│       └── CustomUserDetailsService
+└── user
+    ├── model
+    │   ├── Role
+    │   ├── RoleName
+    │   ├── User
+    │   └── UserStatus
+    └── repository
+        ├── RoleRepository
+        └── UserRepository
 ```

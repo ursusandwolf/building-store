@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="1" author="alex">
+        <createTable tableName="roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password_hash" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp"/>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_roles">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="user_roles" columnNames="user_id, role_id"/>
+
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
+                                 constraintName="fk_user_roles_user"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id"
+                                 constraintName="fk_user_roles_role"
+                                 referencedTableName="roles" referencedColumnNames="id"/>
+
+        <createIndex tableName="users" indexName="idx_users_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="alex">
+        <insert tableName="roles">
+            <column name="name" value="ROLE_CUSTOMER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_SALES_MANAGER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_WAREHOUSE_MANAGER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_PURCHASING_MANAGER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_ACCOUNTANT"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_AUDITOR"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="alex">
+        <insert tableName="users">
+            <column name="email" value="user@example.com"/>
+            <!-- 'password' -->
+            <column name="password_hash" value="$2a$10$d/8pQ6RCPEQEb9mpxTX.X.rxXUEmhhGNyFCTwiZxh.VkhUurIOk06"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueComputed="now()"/>
+            <column name="version" value="0"/>
+        </insert>
+
+        <insert tableName="users">
+            <column name="email" value="admin@example.com"/>
+            <!-- 'admin-pass' -->
+            <column name="password_hash" value="$2a$10$LVv8Dzmy8rMckdOJ2S0ZLui79QCvfju7mz5yXwsAxl4gKLiGToLPK"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="created_at" valueComputed="now()"/>
+            <column name="version" value="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="alex">
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id FROM users u, roles r
+            WHERE u.email = 'user@example.com' AND r.name = 'ROLE_CUSTOMER';
+
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id FROM users u, roles r
+            WHERE u.email = 'admin@example.com' AND r.name = 'ROLE_ADMIN';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

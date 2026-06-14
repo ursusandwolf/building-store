@@ -17,3 +17,13 @@
 - In-memory authentication with `UserDetailsService`.
 - `PrivateHelloController` for testing protected endpoints.
 - Security integration tests.
+
+## [0.2.0-SNAPSHOT] - 2026-06-14
+### Added
+- DB-backed authentication (Iteration 2).
+- `User` and `Role` entities with JPA Auditing.
+- `UserStatus` and `RoleName` enums.
+- Liquibase migration for users, roles, and user_roles tables.
+- `CustomUserDetailsService` for loading users from database.
+- BCrypt password encoding.
+- `DatabaseAuthenticationTests`.
