@@ -8,7 +8,7 @@
         <version>3.2.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.buildstore</groupId>
     <artifactId>buildstore</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>building-materials-store</name>

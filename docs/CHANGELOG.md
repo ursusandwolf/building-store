@@ -27,3 +27,15 @@
 - `CustomUserDetailsService` for loading users from database.
 - BCrypt password encoding.
 - `DatabaseAuthenticationTests`.
+
+## [0.3.0-SNAPSHOT] - 2026-06-14
+### Added
+- Customer registration implementation (Iteration 3).
+- `AppUser` entity (renamed from `User`).
+- `Customer` entity and repository.
+- `AuthController` for registration.
+- Integration tests for registration.
+
+### Changed
+- Package refactored from `com.example.buildstore` to `com.buildstore`.
+- Unified error handling for `IllegalArgumentException` and `DataIntegrityViolationException`.

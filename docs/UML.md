@@ -2,7 +2,7 @@
 
 ## Iteration 0: Package Structure
 ```text
-com.example.buildstore
+com.buildstore
 ├── BuildStoreApplication
 ├── common
 │   ├── api
@@ -12,18 +12,29 @@ com.example.buildstore
 │   └── exception
 │       ├── ErrorResponse
 │       └── GlobalExceptionHandler
+├── customer
+│   ├── model
+│   │   └── Customer
+│   └── repository
+│       └── CustomerRepository
 ├── security
 │   ├── config
 │   │   └── SecurityConfig
 │   └── service
 │       └── CustomUserDetailsService
 └── user
+    ├── controller
+    │   └── AuthController
+    ├── dto
+    │   └── RegisterRequest
     ├── model
+    │   ├── AppUser
     │   ├── Role
     │   ├── RoleName
-    │   ├── User
     │   └── UserStatus
-    └── repository
-        ├── RoleRepository
-        └── UserRepository
+    ├── repository
+    │   ├── RoleRepository
+    │   └── UserRepository
+    └── service
+        └── UserService
 ```
