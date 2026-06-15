@@ -39,3 +39,21 @@
 ### Changed
 - Package refactored from `com.example.buildstore` to `com.buildstore`.
 - Unified error handling for `IllegalArgumentException` and `DataIntegrityViolationException`.
+
+## [0.4.0-SNAPSHOT] - 2026-06-15
+### Added
+- JWT Authentication (Iteration 4).
+- JJWT dependencies for manual JWT implementation.
+- `JwtService` for token generation, extraction, and validation.
+- `JwtAuthenticationFilter` for stateless authentication per request.
+- `JwtAuthenticationEntryPoint` for consistent 401 responses.
+- `LoginRequest` and `AuthResponse` DTOs.
+- `POST /api/auth/login` endpoint.
+- Handling for `BadCredentialsException` and `AccessDeniedException` in `GlobalExceptionHandler`.
+- `JwtAuthenticationTests`.
+
+### Changed
+- Switched security configuration from HTTP Basic to stateless JWT.
+- Updated `SecurityConfig` to include JWT filter and entry point.
+- Hardened JWT implementation: optimized login (no double DB lookup), added account status checks, cached signing key, and converted DTOs to Java Records.
+- Removed obsolete `DatabaseAuthenticationTests`.

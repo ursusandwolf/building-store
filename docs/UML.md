@@ -20,13 +20,19 @@ com.buildstore
 ├── security
 │   ├── config
 │   │   └── SecurityConfig
-│   └── service
-│       └── CustomUserDetailsService
+│   ├── filter
+│   │   └── JwtAuthenticationFilter
+│   ├── service
+│   │   └── JwtService
+│   ├── CustomUserDetailsService
+│   └── JwtAuthenticationEntryPoint
 └── user
     ├── controller
     │   └── AuthController
     ├── dto
-    │   └── RegisterRequest
+    │   ├── RegisterRequest
+    │   ├── LoginRequest
+    │   └── AuthResponse
     ├── model
     │   ├── AppUser
     │   ├── Role
