@@ -8,12 +8,16 @@
 ### Public
 - `GET /api/public/health`: Returns application status.
 - `GET /api/public/version`: Returns project version.
+- `GET /api/catalog/products`: Returns a list of all active products.
+- `GET /api/catalog/products/{id}`: Returns details of a specific active product by ID.
 
 ### Private
 - `GET /api/private/hello`: Returns a greeting (requires JWT Bearer token).
 
 ### Admin
 - `GET /api/admin/users`: Returns a list of all users with their roles (requires `ROLE_ADMIN` role).
+- `POST /api/admin/products`: Creates a new product (requires `ROLE_ADMIN` role, returns `ProductResponse`).
+- `PUT /api/admin/products/{id}`: Updates an existing product by ID (requires `ROLE_ADMIN` role, returns `ProductResponse`).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).

@@ -20,6 +20,25 @@ com.buildstore
 ├── employee
 │   └── controller
 │       └── EmployeeController
+├── product
+│   ├── controller
+│   │   ├── CatalogController
+│   │   └── AdminProductController
+│   ├── dto
+│   │   ├── ProductRequest
+│   │   └── ProductResponse
+│   ├── mapper
+│   │   └── ProductMapper
+│   ├── model
+│   │   ├── Product
+│   │   ├── ProductCategory
+│   │   ├── ProductStatus
+│   │   └── UnitOfMeasure
+│   ├── repository
+│   │   ├── ProductRepository
+│   │   └── ProductCategoryRepository
+│   └── service
+│       └── ProductService
 ├── security
 │   ├── config
 │   │   └── SecurityConfig

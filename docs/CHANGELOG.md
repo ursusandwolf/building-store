@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0-SNAPSHOT] - 2026-06-16
+### Added
+- Product Catalog implementation (Iteration 6).
+- `Product` and `ProductCategory` JPA entities with lazy relationships, optimistic locking (`@Version`), and index configurations.
+- Liquibase migration `v002-create-product-and-category.xml` defining schema and seeding initial categories.
+- `ProductRepository` and `ProductCategoryRepository` with `@EntityGraph` to prevent N+1 queries.
+- `ProductRequest` and `ProductResponse` DTO records with bean validations.
+- `ProductService` implementing SKU uniqueness checks and active status filtering.
+- `CatalogController` exposing public `/api/catalog/products` and `/api/catalog/products/{id}`.
+- `AdminProductController` exposing administrative `/api/admin/products` and `/api/admin/products/{id}` (restricted to `ROLE_ADMIN`).
+- `ProductCatalogTests` validating SKU uniqueness, catalog visibility, and correct DTO mapping.
+- Custom `ResourceNotFoundException` mapped to 404 HTTP status code.
+
 ## [0.5.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Method Security and Employee Roles (Iteration 5).

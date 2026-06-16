@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="1" author="alex">
+        <createTable tableName="product_categories">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sku" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="bigint"/>
+            <column name="brand" type="varchar(100)"/>
+            <column name="description" type="text"/>
+            <column name="base_unit" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp"/>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="products" baseColumnNames="category_id"
+                                 constraintName="fk_products_category"
+                                 referencedTableName="product_categories" referencedColumnNames="id"/>
+
+        <createIndex tableName="products" indexName="idx_products_sku">
+            <column name="sku"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_status">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_category_id">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="alex">
+        <insert tableName="product_categories">
+            <column name="name" value="General"/>
+            <column name="description" value="General building materials"/>
+        </insert>
+        <insert tableName="product_categories">
+            <column name="name" value="Cement and Dry Mixes"/>
+            <column name="description" value="Cement, concrete mix, plaster, and adhesives"/>
+        </insert>
+        <insert tableName="product_categories">
+            <column name="name" value="Lumber and Panels"/>
+            <column name="description" value="OSB, plywood, and wood lumber"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
