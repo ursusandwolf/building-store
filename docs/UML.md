@@ -57,6 +57,14 @@ com.buildstore
 │   │   └── WarehouseRepository
 │   └── service
 │       └── WarehouseService
+├── inventory
+│   ├── model
+│   │   ├── StockItem
+│   │   ├── StockMovement
+│   │   └── StockMovementType
+│   └── repository
+│       ├── StockItemRepository
+│       └── StockMovementRepository
 ├── security
 │   ├── config
 │   │   └── SecurityConfig

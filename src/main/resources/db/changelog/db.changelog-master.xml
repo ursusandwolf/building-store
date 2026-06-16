@@ -9,4 +9,5 @@
     <include file="db/changelog/migrations/v002-create-product-and-category.xml"/>
     <include file="db/changelog/migrations/v003-create-product-packages.xml"/>
     <include file="db/changelog/migrations/v004-create-warehouses.xml"/>
+    <include file="db/changelog/migrations/v005-create-inventory.xml"/>
     </databaseChangeLog>

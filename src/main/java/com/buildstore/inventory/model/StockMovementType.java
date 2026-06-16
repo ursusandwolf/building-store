@@ -1,0 +1,13 @@
+package com.buildstore.inventory.model;
+
+public enum StockMovementType {
+    PURCHASE_RECEIPT,
+    SALES_RESERVE,
+    SALES_RELEASE,
+    SALES_SHIPMENT,
+    RETURN_RECEIPT,
+    DAMAGE_WRITE_OFF,
+    INVENTORY_ADJUSTMENT,
+    WAREHOUSE_TRANSFER_OUT,
+    WAREHOUSE_TRANSFER_IN
+}

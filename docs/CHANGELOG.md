@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.0-SNAPSHOT] - 2026-06-16
+### Added
+- Inventory management core implementation (Iteration 9, part 1).
+- `StockItem` JPA entity for tracking inventory levels per product and warehouse.
+- `StockMovement` entity for immutable history of inventory changes.
+- `StockMovementType` enum.
+- `StockItemRepository` with pessimistic locking for concurrency safety.
+- Liquibase migration `v005-create-inventory.xml`.
+
 ## [0.8.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Warehouse management implementation (Iteration 8).
