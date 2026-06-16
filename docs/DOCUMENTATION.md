@@ -30,6 +30,7 @@
 - `GET /api/admin/suppliers`: Returns all suppliers (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
 - `POST /api/admin/purchase-orders`: Creates a new purchase order (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
 - `GET /api/admin/purchase-orders`: Returns all purchase orders (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
+- `POST /api/admin/purchase-orders/{id}/goods-receipts`: Processes goods receipt for an order (requires `ROLE_ADMIN` or `ROLE_WAREHOUSE_MANAGER`).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).

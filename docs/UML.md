@@ -73,12 +73,15 @@ com.buildstore
 │       └── SupplierService
 ├── purchase
 │   ├── controller
-│   │   └── AdminPurchaseOrderController
+│   │   ├── AdminPurchaseOrderController
+│   │   └── AdminGoodsReceiptController
 │   ├── dto
 │   │   ├── PurchaseOrderRequest
 │   │   ├── PurchaseOrderLineRequest
 │   │   ├── PurchaseOrderResponse
-│   │   └── PurchaseOrderLineResponse
+│   │   ├── PurchaseOrderLineResponse
+│   │   ├── GoodsReceiptRequest
+│   │   └── GoodsReceiptLineRequest
 │   ├── mapper
 │   │   └── PurchaseOrderMapper
 │   ├── model
@@ -88,7 +91,8 @@ com.buildstore
 │   ├── repository
 │   │   └── PurchaseOrderRepository
 │   └── service
-│       └── PurchaseOrderService
+│       ├── PurchaseOrderService
+│       └── GoodsReceiptService
 ├── inventory
 │   ├── controller
 │   │   └── AdminInventoryController

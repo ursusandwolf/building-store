@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.0-SNAPSHOT] - 2026-06-16
+### Added
+- Goods receipt implementation (Iteration 11).
+- `GoodsReceiptService` for processing order receipts and updating inventory.
+- `AdminGoodsReceiptController` endpoint `POST /api/admin/purchase-orders/{id}/goods-receipts`.
+- Idempotency support for goods receipts using a unique key to prevent duplicate stock movements.
+- Automated update of `PurchaseOrder` status to `COMPLETED` upon full receipt.
+- Integration tests in `GoodsReceiptTests`.
+
 ## [0.10.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Supplier and Purchase Order management implementation (Iteration 10).
