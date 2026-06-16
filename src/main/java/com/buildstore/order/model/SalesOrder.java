@@ -33,6 +33,9 @@ public class SalesOrder {
     @Column(nullable = false)
     private SalesOrderStatus status;
 
+    @Column(nullable = false, length = 3)
+    private String currency = "USD";
+
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 

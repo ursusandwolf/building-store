@@ -18,4 +18,5 @@
     <include file="db/changelog/migrations/v011-create-stock-reservations.xml"/>
     <include file="db/changelog/migrations/v012-update-sales-order-lines.xml"/>
     <include file="db/changelog/migrations/v013-create-payment-ledger.xml"/>
+    <include file="db/changelog/migrations/v014-add-currency-to-sales-orders.xml"/>
     </databaseChangeLog>
