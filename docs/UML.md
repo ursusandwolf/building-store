@@ -57,6 +57,38 @@ com.buildstore
 │   │   └── WarehouseRepository
 │   └── service
 │       └── WarehouseService
+├── supplier
+│   ├── controller
+│   │   └── AdminSupplierController
+│   ├── dto
+│   │   ├── SupplierRequest
+│   │   └── SupplierResponse
+│   ├── mapper
+│   │   └── SupplierMapper
+│   ├── model
+│   │   └── Supplier
+│   ├── repository
+│   │   └── SupplierRepository
+│   └── service
+│       └── SupplierService
+├── purchase
+│   ├── controller
+│   │   └── AdminPurchaseOrderController
+│   ├── dto
+│   │   ├── PurchaseOrderRequest
+│   │   ├── PurchaseOrderLineRequest
+│   │   ├── PurchaseOrderResponse
+│   │   └── PurchaseOrderLineResponse
+│   ├── mapper
+│   │   └── PurchaseOrderMapper
+│   ├── model
+│   │   ├── PurchaseOrder
+│   │   ├── PurchaseOrderLine
+│   │   └── PurchaseOrderStatus
+│   ├── repository
+│   │   └── PurchaseOrderRepository
+│   └── service
+│       └── PurchaseOrderService
 ├── inventory
 │   ├── controller
 │   │   └── AdminInventoryController

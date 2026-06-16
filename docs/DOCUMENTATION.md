@@ -26,6 +26,10 @@
 - `GET /api/admin/warehouses`: Returns all warehouses (requires `ROLE_ADMIN`, `ROLE_WAREHOUSE_MANAGER`, or `ROLE_AUDITOR`).
 - `GET /api/admin/warehouses/{id}`: Returns a warehouse by ID (requires `ROLE_ADMIN`, `ROLE_WAREHOUSE_MANAGER`, or `ROLE_AUDITOR`).
 - `POST /api/admin/stock-adjustments`: Adjusts stock levels (requires `ROLE_ADMIN` or `ROLE_WAREHOUSE_MANAGER`).
+- `POST /api/admin/suppliers`: Creates a new supplier (requires `ROLE_ADMIN` role).
+- `GET /api/admin/suppliers`: Returns all suppliers (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
+- `POST /api/admin/purchase-orders`: Creates a new purchase order (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
+- `GET /api/admin/purchase-orders`: Returns all purchase orders (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).

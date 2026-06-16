@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.10.0-SNAPSHOT] - 2026-06-16
+### Added
+- Supplier and Purchase Order management implementation (Iteration 10).
+- `Supplier` entity for managing procurement sources.
+- `PurchaseOrder` and `PurchaseOrderLine` entities for purchase tracking.
+- Liquibase migration `v006-create-suppliers.xml` and `v007-create-purchase-orders.xml`.
+- Admin endpoints for managing suppliers and purchase orders.
+- Role-based access control for purchasing functionality (Admin, Purchasing Manager).
+- Integration tests in `PurchaseOrderTests`.
+
 ## [0.9.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Inventory management implementation (Iteration 9).

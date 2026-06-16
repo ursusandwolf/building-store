@@ -16,7 +16,8 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 6: Product catalog - COMPLETED.
 - Iteration 7: Units and product packages - COMPLETED.
 - Iteration 8: Warehouses - COMPLETED.
-- **Iteration 9: StockItem and stock movement** - COMPLETED.
+- Iteration 9: StockItem and stock movement - COMPLETED.
+- **Iteration 10: Suppliers and purchase orders** - COMPLETED.
 - Package refactored to `com.buildstore`.
 - `User` entity renamed to `AppUser`.
 - Customer registration implemented with DTO validation.
@@ -30,9 +31,10 @@ Educational project building a backend for a building materials store with Sprin
 - Proper mapping of boolean fields in product packages (defaultForSale, defaultForPurchase).
 - Warehouse management implemented with restricted access (Admin, Warehouse Manager, Auditor).
 - Inventory models (StockItem, StockMovement) and service (InventoryService) implemented.
+- Supplier and PurchaseOrder entities/API implemented with role-based access.
 - All tests passing.
 
 ## Pending Items
-- Iteration 10: Pricing.
 - Iteration 11: Goods receipt.
+- Iteration 12: Price lists.
 ...
