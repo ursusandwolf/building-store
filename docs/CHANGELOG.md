@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.0-SNAPSHOT] - 2026-06-16
+### Added
+- Discount policy implementation (Iteration 13).
+- `Discount` entity for managing product/global discounts.
+- `DiscountService` for deterministic price calculation based on priority and compatibility.
+- `AdminDiscountController` for managing discounts.
+- `CatalogDiscountController` for price previewing in catalog.
+- Liquibase migration `v009-create-discounts.xml`.
+- Integration tests in `DiscountTests`.
+
 ## [0.12.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Price lists implementation (Iteration 12).

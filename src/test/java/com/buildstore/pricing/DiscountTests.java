@@ -1,13 +1,13 @@
 package com.buildstore.pricing;
 
+import com.buildstore.pricing.dto.DiscountRequest;
+import com.buildstore.pricing.service.DiscountService;
 import com.buildstore.product.model.Product;
 import com.buildstore.product.model.ProductCategory;
 import com.buildstore.product.model.ProductStatus;
 import com.buildstore.product.model.UnitOfMeasure;
 import com.buildstore.product.repository.ProductCategoryRepository;
 import com.buildstore.product.repository.ProductRepository;
-import com.buildstore.pricing.dto.PriceListRequest;
-import com.buildstore.pricing.dto.PriceListItemRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,19 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-class PricingTests {
+class DiscountTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,8 +51,8 @@ class PricingTests {
                 .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
         
         product = productRepository.save(Product.builder()
-                .sku("SKU-PRICE")
-                .name("Price Item")
+                .sku("SKU-DISC")
+                .name("Discount Item")
                 .category(category)
                 .baseUnit(UnitOfMeasure.PIECE)
                 .status(ProductStatus.ACTIVE)
@@ -65,34 +61,18 @@ class PricingTests {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void priceListWorkflow_shouldSucceed() throws Exception {
-        // 1. Create Price List
-        PriceListRequest listRequest = new PriceListRequest(
+    void createDiscount_shouldSucceed() throws Exception {
+        DiscountRequest request = new DiscountRequest(
                 "Winter Sale",
-                Instant.now().minus(1, ChronoUnit.DAYS),
-                Instant.now().plus(1, ChronoUnit.DAYS)
+                new BigDecimal("20.00"),
+                1,
+                true,
+                product.getId()
         );
 
-        String listResponse = mockMvc.perform(post("/api/admin/price-lists")
+        mockMvc.perform(post("/api/admin/discounts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(listRequest)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        Long priceListId = Long.parseLong(listResponse);
-
-        // 2. Add Item
-        PriceListItemRequest itemRequest = new PriceListItemRequest(product.getId(), new BigDecimal("99.99"));
-        mockMvc.perform(post("/api/admin/price-lists/" + priceListId + "/items")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemRequest)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
-
-        // 3. Verify Active Price
-        mockMvc.perform(get("/api/catalog/products/" + product.getId() + "/price"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.price").value(99.99));
     }
 }

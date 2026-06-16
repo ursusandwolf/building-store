@@ -19,7 +19,8 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 9: StockItem and stock movement - COMPLETED.
 - Iteration 10: Suppliers and purchase orders - COMPLETED.
 - Iteration 11: Goods receipt - COMPLETED.
-- **Iteration 12: Price lists** - COMPLETED.
+- Iteration 12: Price lists - COMPLETED.
+- **Iteration 13: Discounts** - COMPLETED.
 - Package refactored to `com.buildstore`.
 - `User` entity renamed to `AppUser`.
 - Customer registration implemented with DTO validation.
@@ -36,9 +37,9 @@ Educational project building a backend for a building materials store with Sprin
 - Supplier and PurchaseOrder entities/API implemented with role-based access.
 - Goods receipt processing implemented with idempotent stock adjustments.
 - Price list management implemented with server-side price selection (active/valid periods).
+- Discount policy implemented with deterministic priority-based application.
 - All tests passing.
 
 ## Pending Items
-- Iteration 13: Discounts.
 - Iteration 14: Sales order draft.
 ...

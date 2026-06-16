@@ -95,19 +95,24 @@ com.buildstore
 │       └── GoodsReceiptService
 ├── pricing
 │   ├── controller
-│   │   └── PriceListController
+│   │   ├── PriceListController
+│   │   └── CatalogDiscountController
 │   ├── dto
 │   │   ├── PriceListRequest
 │   │   ├── PriceListItemRequest
-│   │   └── PriceResponse
+│   │   ├── PriceResponse
+│   │   └── DiscountRequest
 │   ├── model
 │   │   ├── PriceList
-│   │   └── PriceListItem
+│   │   ├── PriceListItem
+│   │   └── Discount
 │   ├── repository
 │   │   ├── PriceListRepository
-│   │   └── PriceListItemRepository
+│   │   ├── PriceListItemRepository
+│   │   └── DiscountRepository
 │   └── service
-│       └── PriceListService
+│       ├── PriceListService
+│       └── DiscountService
 ├── inventory
 │   ├── controller
 │   │   └── AdminInventoryController

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Service
@@ -22,6 +23,7 @@ public class PriceListService {
     private final PriceListRepository priceListRepository;
     private final PriceListItemRepository priceListItemRepository;
     private final ProductRepository productRepository;
+    private final DiscountService discountService;
 
     @Transactional
     public Long createPriceList(PriceListRequest request) {
@@ -57,6 +59,8 @@ public class PriceListService {
                         now, now, productId
                 )
                 .orElseThrow(() -> new ResourceNotFoundException("No active price found for product"));
-        return new PriceResponse(item.getPrice());
+        
+        BigDecimal discountedPrice = discountService.applyDiscounts(productId, item.getPrice());
+        return new PriceResponse(discountedPrice);
     }
 }
