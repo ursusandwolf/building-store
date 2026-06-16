@@ -2,6 +2,7 @@ package com.buildstore.order.model;
 
 import com.buildstore.user.model.AppUser;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,10 @@ import java.util.List;
 @Entity
 @Table(name = "sales_orders")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SalesOrder {
 
     @Id
@@ -44,70 +49,4 @@ public class SalesOrder {
 
     @Version
     private Long version;
-
-    public SalesOrder() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public AppUser getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(AppUser customer) {
-        this.customer = customer;
-    }
-
-    public SalesOrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(SalesOrderStatus status) {
-        this.status = status;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public List<SalesOrderLine> getLines() {
-        return lines;
-    }
-
-    public void setLines(List<SalesOrderLine> lines) {
-        this.lines = lines;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 }

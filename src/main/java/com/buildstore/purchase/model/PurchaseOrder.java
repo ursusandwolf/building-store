@@ -2,6 +2,7 @@ package com.buildstore.purchase.model;
 
 import com.buildstore.supplier.model.Supplier;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,6 +14,10 @@ import java.util.List;
 @Entity
 @Table(name = "purchase_orders")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseOrder {
 
     @Id
@@ -40,27 +45,4 @@ public class PurchaseOrder {
 
     @Version
     private Long version;
-
-    public PurchaseOrder() {}
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Supplier getSupplier() { return supplier; }
-    public void setSupplier(Supplier supplier) { this.supplier = supplier; }
-
-    public PurchaseOrderStatus getStatus() { return status; }
-    public void setStatus(PurchaseOrderStatus status) { this.status = status; }
-
-    public List<PurchaseOrderLine> getLines() { return lines; }
-    public void setLines(List<PurchaseOrderLine> lines) { this.lines = lines; }
-
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-
-    public String getCreatedBy() { return createdBy; }
-    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-
-    public Long getVersion() { return version; }
-    public void setVersion(Long version) { this.version = version; }
 }

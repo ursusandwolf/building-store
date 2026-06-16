@@ -1,16 +1,19 @@
 # Changelog
 
-## [0.13.0-SNAPSHOT] - 2026-06-16
-### Added
-- Discount policy implementation (Iteration 13).
-- `Discount` entity for managing product/global discounts.
-- `DiscountService` for deterministic price calculation based on priority and compatibility.
-- `AdminDiscountController` for managing discounts.
-- `CatalogDiscountController` for price previewing in catalog.
-- Liquibase migration `v009-create-discounts.xml`.
-- Integration tests in `DiscountTests`.
+## [0.15.0-SNAPSHOT] - 2026-06-16
+### Changed
+- Refactored DTOs and Entities to modern Java standards.
+- Migrated all DTOs to use Java Records for immutability.
+- Migrated JPA Entities to use Lombok annotations (@Getter, @Setter, @NoArgsConstructor, @AllArgsConstructor) to reduce boilerplate.
+- Verified compilation and build stability with `mvn compile`.
 
-## [0.12.0-SNAPSHOT] - 2026-06-16
+## [0.14.0-SNAPSHOT] - 2026-06-16
+### Added
+- Sales Order Draft implementation (Iteration 14).
+...
+
+- Discount policy implementation (Iteration 13).
+- ...
 ### Added
 - Price lists implementation (Iteration 12).
 - `PriceList` and `PriceListItem` entities.

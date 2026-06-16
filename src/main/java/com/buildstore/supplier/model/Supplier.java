@@ -1,9 +1,14 @@
 package com.buildstore.supplier.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "suppliers")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Supplier {
 
     @Id
@@ -15,15 +20,4 @@ public class Supplier {
 
     @Column(nullable = false)
     private boolean active = true;
-
-    public Supplier() {}
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
 }

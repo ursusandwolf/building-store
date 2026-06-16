@@ -20,8 +20,10 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 10: Suppliers and purchase orders - COMPLETED.
 - Iteration 11: Goods receipt - COMPLETED.
 - Iteration 12: Price lists - COMPLETED.
-- **Iteration 13: Discounts** - COMPLETED.
+- Iteration 13: Discounts - COMPLETED.
+- Refactored core JPA entities to use Lombok annotations (@Getter, @Setter, @NoArgsConstructor, @AllArgsConstructor) and removed manual boilerplate.
 - Package refactored to `com.buildstore`.
+
 - `User` entity renamed to `AppUser`.
 - Customer registration implemented with DTO validation.
 - JWT authentication implemented (stateless).
