@@ -3,6 +3,9 @@ package com.buildstore.product.mapper;
 import com.buildstore.product.dto.ProductRequest;
 import com.buildstore.product.dto.ProductResponse;
 import com.buildstore.product.model.Product;
+import com.buildstore.product.dto.ProductPackageRequest;
+import com.buildstore.product.dto.ProductPackageResponse;
+import com.buildstore.product.model.ProductPackage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -28,4 +31,11 @@ public interface ProductMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "version", ignore = true)
     void updateEntityFromRequest(ProductRequest request, @MappingTarget Product product);
+
+    @Mapping(source = "product.id", target = "productId")
+    ProductPackageResponse toPackageResponse(ProductPackage pkg);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "product", ignore = true)
+    ProductPackage toPackageEntity(ProductPackageRequest request);
 }

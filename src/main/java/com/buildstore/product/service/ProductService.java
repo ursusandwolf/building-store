@@ -9,6 +9,10 @@ import com.buildstore.product.model.ProductCategory;
 import com.buildstore.product.model.ProductStatus;
 import com.buildstore.product.repository.ProductCategoryRepository;
 import com.buildstore.product.repository.ProductRepository;
+import com.buildstore.product.dto.ProductPackageRequest;
+import com.buildstore.product.dto.ProductPackageResponse;
+import com.buildstore.product.model.ProductPackage;
+import com.buildstore.product.repository.ProductPackageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductCategoryRepository categoryRepository;
+    private final ProductPackageRepository productPackageRepository;
     private final ProductMapper productMapper;
 
     @Transactional
@@ -92,5 +97,61 @@ public class ProductService {
         }
 
         return productMapper.toResponse(product);
+    }
+
+    @Transactional
+    public ProductPackageResponse addPackageToProduct(Long productId, ProductPackageRequest request) {
+        log.info("Adding package to product ID: {}", productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productId));
+
+        if (request.barcode() != null && !request.barcode().isBlank()) {
+            if (productPackageRepository.findByBarcode(request.barcode()).isPresent()) {
+                throw new IllegalArgumentException("Package with barcode " + request.barcode() + " already exists");
+            }
+        }
+
+        if (Boolean.TRUE.equals(request.defaultForSale())) {
+            List<ProductPackage> existing = productPackageRepository.findAllByProductId(productId);
+            for (ProductPackage p : existing) {
+                if (p.isDefaultForSale()) {
+                    p.setDefaultForSale(false);
+                    productPackageRepository.save(p);
+                }
+            }
+        }
+
+        if (Boolean.TRUE.equals(request.defaultForPurchase())) {
+            List<ProductPackage> existing = productPackageRepository.findAllByProductId(productId);
+            for (ProductPackage p : existing) {
+                if (p.isDefaultForPurchase()) {
+                    p.setDefaultForPurchase(false);
+                    productPackageRepository.save(p);
+                }
+            }
+        }
+
+        ProductPackage pkg = productMapper.toPackageEntity(request);
+        pkg.setProduct(product);
+        if (request.defaultForSale() != null) {
+            pkg.setDefaultForSale(request.defaultForSale());
+        }
+        if (request.defaultForPurchase() != null) {
+            pkg.setDefaultForPurchase(request.defaultForPurchase());
+        }
+
+        ProductPackage saved = productPackageRepository.save(pkg);
+        return productMapper.toPackageResponse(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductPackageResponse> getPackagesByProductId(Long productId) {
+        log.info("Fetching packages for product ID: {}", productId);
+        if (!productRepository.existsById(productId)) {
+            throw new ResourceNotFoundException("Product not found with ID: " + productId);
+        }
+        return productPackageRepository.findAllByProductId(productId).stream()
+                .map(productMapper::toPackageResponse)
+                .toList();
     }
 }

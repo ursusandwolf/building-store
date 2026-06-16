@@ -26,17 +26,21 @@ com.buildstore
 │   │   └── AdminProductController
 │   ├── dto
 │   │   ├── ProductRequest
-│   │   └── ProductResponse
+│   │   ├── ProductResponse
+│   │   ├── ProductPackageRequest
+│   │   └── ProductPackageResponse
 │   ├── mapper
 │   │   └── ProductMapper
 │   ├── model
 │   │   ├── Product
 │   │   ├── ProductCategory
+│   │   ├── ProductPackage
 │   │   ├── ProductStatus
 │   │   └── UnitOfMeasure
 │   ├── repository
 │   │   ├── ProductRepository
-│   │   └── ProductCategoryRepository
+│   │   ├── ProductCategoryRepository
+│   │   └── ProductPackageRepository
 │   └── service
 │       └── ProductService
 ├── security

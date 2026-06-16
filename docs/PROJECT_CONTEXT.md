@@ -14,6 +14,7 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 4: JWT Authentication - COMPLETED.
 - Iteration 5: Method security and employee roles - COMPLETED.
 - Iteration 6: Product catalog - COMPLETED.
+- **Iteration 7: Units and product packages** - COMPLETED.
 - Package refactored to `com.buildstore`.
 - `User` entity renamed to `AppUser`.
 - Customer registration implemented with DTO validation.
@@ -23,10 +24,11 @@ Educational project building a backend for a building materials store with Sprin
 - Product and product category tables defined with Liquibase, and seed categories populated.
 - Pre-fetching with `@EntityGraph` used to prevent N+1 query problems in ProductRepository.
 - Catalog endpoints implemented with proper validations and access controls.
+- Product packages and units implemented with admin and catalog endpoints.
+- Proper mapping of boolean fields in product packages (defaultForSale, defaultForPurchase).
 - All tests passing.
 
 ## Pending Items
-- Iteration 7: Units and product packages.
 - Iteration 8: Warehouses.
 - Iteration 9: StockItem and stock movement.
 ...

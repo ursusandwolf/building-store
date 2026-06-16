@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0-SNAPSHOT] - 2026-06-16
+### Added
+- Units and Product Packages implementation (Iteration 7).
+- `ProductPackage` JPA entity and `ProductPackageRepository`.
+- `UnitOfMeasure` enum with common measurement units.
+- Liquibase migration `v003-create-product-packages.xml` for package storage.
+- `ProductPackageRequest` and `ProductPackageResponse` DTO records.
+- Service logic for managing packages, including default package enforcement (only one default for sale/purchase).
+- `AdminProductController` endpoints: `POST /api/admin/products/{id}/packages` and `GET /api/admin/products/{id}/packages`.
+- `CatalogController` endpoint: `GET /api/catalog/products/{id}/packages` for viewing packages of active products.
+- Updated `ProductCatalogTests` with package workflow validation and duplicate barcode checks.
+
 ## [0.6.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Product Catalog implementation (Iteration 6).

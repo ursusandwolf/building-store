@@ -10,6 +10,7 @@
 - `GET /api/public/version`: Returns project version.
 - `GET /api/catalog/products`: Returns a list of all active products.
 - `GET /api/catalog/products/{id}`: Returns details of a specific active product by ID.
+- `GET /api/catalog/products/{id}/packages`: Returns a list of packages for a specific active product.
 
 ### Private
 - `GET /api/private/hello`: Returns a greeting (requires JWT Bearer token).
@@ -18,6 +19,8 @@
 - `GET /api/admin/users`: Returns a list of all users with their roles (requires `ROLE_ADMIN` role).
 - `POST /api/admin/products`: Creates a new product (requires `ROLE_ADMIN` role, returns `ProductResponse`).
 - `PUT /api/admin/products/{id}`: Updates an existing product by ID (requires `ROLE_ADMIN` role, returns `ProductResponse`).
+- `POST /api/admin/products/{id}/packages`: Adds a new package to a product (requires `ROLE_ADMIN` role, returns `ProductPackageResponse`).
+- `GET /api/admin/products/{id}/packages`: Returns all packages for a specific product (requires `ROLE_ADMIN` role).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).

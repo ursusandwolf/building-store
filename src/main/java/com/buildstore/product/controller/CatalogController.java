@@ -1,5 +1,6 @@
 package com.buildstore.product.controller;
 
+import com.buildstore.product.dto.ProductPackageResponse;
 import com.buildstore.product.dto.ProductResponse;
 import com.buildstore.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,12 @@ public class CatalogController {
     @GetMapping("/{id}")
     public ProductResponse getActiveProductById(@PathVariable Long id) {
         return productService.getProductById(id, true);
+    }
+
+    @GetMapping("/{id}/packages")
+    public List<ProductPackageResponse> getProductPackages(@PathVariable Long id) {
+        // We only show packages for active products in the catalog
+        productService.getProductById(id, true);
+        return productService.getPackagesByProductId(id);
     }
 }
