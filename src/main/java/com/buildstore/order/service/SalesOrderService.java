@@ -1,6 +1,7 @@
 package com.buildstore.order.service;
 
 import com.buildstore.common.exception.ResourceNotFoundException;
+import com.buildstore.inventory.service.ReservationService;
 import com.buildstore.order.dto.SalesOrderRequest;
 import com.buildstore.order.dto.SalesOrderResponse;
 import com.buildstore.order.mapper.SalesOrderMapper;
@@ -11,6 +12,7 @@ import com.buildstore.order.repository.SalesOrderRepository;
 import com.buildstore.pricing.service.PriceListService;
 import com.buildstore.product.repository.ProductRepository;
 import com.buildstore.user.repository.UserRepository;
+import com.buildstore.warehouse.repository.WarehouseRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class SalesOrderService {
@@ -27,17 +30,23 @@ public class SalesOrderService {
     private final PriceListService priceListService;
     private final UserRepository userRepository;
     private final SalesOrderMapper salesOrderMapper;
+    private final ReservationService reservationService;
+    private final WarehouseRepository warehouseRepository;
 
     public SalesOrderService(SalesOrderRepository salesOrderRepository,
                             ProductRepository productRepository,
                             PriceListService priceListService,
                             UserRepository userRepository,
-                            SalesOrderMapper salesOrderMapper) {
+                            SalesOrderMapper salesOrderMapper,
+                            ReservationService reservationService,
+                            WarehouseRepository warehouseRepository) {
         this.salesOrderRepository = salesOrderRepository;
         this.productRepository = productRepository;
         this.priceListService = priceListService;
         this.userRepository = userRepository;
         this.salesOrderMapper = salesOrderMapper;
+        this.reservationService = reservationService;
+        this.warehouseRepository = warehouseRepository;
     }
 
     @Transactional
@@ -50,26 +59,35 @@ public class SalesOrderService {
         order.setCustomer(customer);
         order.setStatus(SalesOrderStatus.DRAFT);
         order.setTotalAmount(BigDecimal.ZERO);
+        order = salesOrderRepository.save(order);
 
-        final BigDecimal[] total = {BigDecimal.ZERO};
+        AtomicReference<BigDecimal> total = new AtomicReference<>(BigDecimal.ZERO);
+        final SalesOrder finalOrder = order;
         List<SalesOrderLine> lines = request.lines().stream().map(lineRequest -> {
             var product = productRepository.findById(lineRequest.productId())
                     .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+            var warehouse = warehouseRepository.findById(lineRequest.warehouseId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
             BigDecimal price = priceListService.getActivePrice(product.getId()).price();
             
-            total[0] = total[0].add(price.multiply(lineRequest.quantity()));
+            total.set(total.get().add(price.multiply(lineRequest.quantity())));
             
             SalesOrderLine line = new SalesOrderLine();
-            line.setSalesOrder(order);
+            line.setSalesOrder(finalOrder);
             line.setProduct(product);
             line.setProductNameSnapshot(product.getName());
             line.setPriceAtOrder(price);
             line.setQuantity(lineRequest.quantity());
+            line.setUnit(product.getBaseUnit());
+            line.setWarehouse(warehouse);
+            
+            reservationService.createReservation(finalOrder, line, product, warehouse, lineRequest.quantity());
+            
             return line;
         }).toList();
 
         order.setLines(new ArrayList<>(lines));
-        order.setTotalAmount(total[0]);
+        order.setTotalAmount(total.get());
         return salesOrderMapper.toResponse(salesOrderRepository.save(order));
     }
 

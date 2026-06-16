@@ -15,4 +15,6 @@
     <include file="db/changelog/migrations/v008-create-price-lists.xml"/>
     <include file="db/changelog/migrations/v009-create-discounts.xml"/>
     <include file="db/changelog/migrations/v010-create-sales-orders.xml"/>
+    <include file="db/changelog/migrations/v011-create-stock-reservations.xml"/>
+    <include file="db/changelog/migrations/v012-update-sales-order-lines.xml"/>
     </databaseChangeLog>

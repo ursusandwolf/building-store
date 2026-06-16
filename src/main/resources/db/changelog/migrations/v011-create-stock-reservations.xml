@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="v011-create-stock-reservations" author="alex">
+        <createTable tableName="stock_reservations">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_order" references="sales_orders(id)"/>
+            </column>
+            <column name="order_line_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_order_line" references="sales_order_lines(id)"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_product" references="products(id)"/>
+            </column>
+            <column name="warehouse_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_warehouse" references="warehouses(id)"/>
+            </column>
+            <column name="quantity" type="DECIMAL(19,4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reserved_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP"/>
+            <column name="released_at" type="TIMESTAMP"/>
+            <column name="version" type="BIGINT" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_reservation_order" tableName="stock_reservations">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

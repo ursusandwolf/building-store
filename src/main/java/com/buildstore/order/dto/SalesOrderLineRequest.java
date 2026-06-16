@@ -7,5 +7,7 @@ public record SalesOrderLineRequest(
     @NotNull(message = "Product ID is required")
     Long productId,
     @NotNull(message = "Quantity is required")
-    BigDecimal quantity
+    BigDecimal quantity,
+    @NotNull(message = "Warehouse ID is required")
+    Long warehouseId
 ) {}

@@ -37,6 +37,34 @@ public class InventoryService {
     }
 
     @Transactional
+    public void reserveStock(Long productId, Long warehouseId, BigDecimal quantity) {
+        StockItem stockItem = stockItemRepository.findByProductIdAndWarehouseId(productId, warehouseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock item not found"));
+
+        if (stockItem.getAvailableQuantity().compareTo(quantity) < 0) {
+            throw new IllegalArgumentException("Insufficient available stock");
+        }
+
+        stockItem.setAvailableQuantity(stockItem.getAvailableQuantity().subtract(quantity));
+        stockItem.setReservedQuantity(stockItem.getReservedQuantity().add(quantity));
+        stockItemRepository.save(stockItem);
+    }
+
+    @Transactional
+    public void releaseStock(Long productId, Long warehouseId, BigDecimal quantity) {
+        StockItem stockItem = stockItemRepository.findByProductIdAndWarehouseId(productId, warehouseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock item not found"));
+
+        if (stockItem.getReservedQuantity().compareTo(quantity) < 0) {
+            throw new IllegalArgumentException("Insufficient reserved stock");
+        }
+
+        stockItem.setReservedQuantity(stockItem.getReservedQuantity().subtract(quantity));
+        stockItem.setAvailableQuantity(stockItem.getAvailableQuantity().add(quantity));
+        stockItemRepository.save(stockItem);
+    }
+
+    @Transactional
     public void adjustStock(StockAdjustmentRequest request) {
         log.info("Adjusting stock for product {}, warehouse {}, type {}", request.productId(), request.warehouseId(), request.type());
 
