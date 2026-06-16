@@ -2,28 +2,31 @@ package com.buildstore.purchase.service;
 
 import com.buildstore.common.exception.ResourceNotFoundException;
 import com.buildstore.inventory.model.StockMovementType;
-import com.buildstore.inventory.repository.StockItemRepository;
-import com.buildstore.inventory.repository.StockMovementRepository;
 import com.buildstore.inventory.service.InventoryService;
 import com.buildstore.inventory.dto.StockAdjustmentRequest;
+import com.buildstore.inventory.repository.StockMovementRepository;
 import com.buildstore.purchase.dto.GoodsReceiptRequest;
 import com.buildstore.purchase.model.PurchaseOrder;
 import com.buildstore.purchase.model.PurchaseOrderLine;
 import com.buildstore.purchase.model.PurchaseOrderStatus;
 import com.buildstore.purchase.repository.PurchaseOrderRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
 @Service
-@RequiredArgsConstructor
 public class GoodsReceiptService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final InventoryService inventoryService;
     private final StockMovementRepository stockMovementRepository;
+
+    public GoodsReceiptService(PurchaseOrderRepository purchaseOrderRepository, 
+                               InventoryService inventoryService,
+                               StockMovementRepository stockMovementRepository) {
+        this.purchaseOrderRepository = purchaseOrderRepository;
+        this.inventoryService = inventoryService;
+        this.stockMovementRepository = stockMovementRepository;
+    }
 
     @Transactional
     public void processGoodsReceipt(Long orderId, GoodsReceiptRequest request) {
@@ -44,11 +47,9 @@ public class GoodsReceiptService {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Product not in purchase order"));
 
-            // Here we should check received quantity vs ordered quantity
-            
             inventoryService.adjustStock(new StockAdjustmentRequest(
                     line.getProduct().getId(),
-                    1L, // Assuming a default warehouse for now, iteration 8
+                    1L, // Assuming a default warehouse
                     StockMovementType.PURCHASE_RECEIPT,
                     lineRequest.quantity(),
                     "Receipt for PO " + orderId,
@@ -56,7 +57,6 @@ public class GoodsReceiptService {
             ));
         }
 
-        // Logic to update status if all items received
         order.setStatus(PurchaseOrderStatus.COMPLETED);
         purchaseOrderRepository.save(order);
     }

@@ -10,29 +10,35 @@ import com.buildstore.product.model.Product;
 import com.buildstore.product.repository.ProductRepository;
 import com.buildstore.warehouse.model.Warehouse;
 import com.buildstore.warehouse.repository.WarehouseRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class InventoryService {
 
+    private static final Logger log = LoggerFactory.getLogger(InventoryService.class);
     private final StockItemRepository stockItemRepository;
     private final StockMovementRepository stockMovementRepository;
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
 
+    public InventoryService(StockItemRepository stockItemRepository,
+                            StockMovementRepository stockMovementRepository,
+                            ProductRepository productRepository,
+                            WarehouseRepository warehouseRepository) {
+        this.stockItemRepository = stockItemRepository;
+        this.stockMovementRepository = stockMovementRepository;
+        this.productRepository = productRepository;
+        this.warehouseRepository = warehouseRepository;
+    }
+
     @Transactional
     public void adjustStock(StockAdjustmentRequest request) {
         log.info("Adjusting stock for product {}, warehouse {}, type {}", request.productId(), request.warehouseId(), request.type());
-
-        // Idempotency check could be added here if needed, 
-        // for now, we'll focus on the adjustment logic.
 
         StockItem stockItem = stockItemRepository.findByProductIdAndWarehouseId(request.productId(), request.warehouseId())
                 .orElseGet(() -> {
@@ -40,7 +46,13 @@ public class InventoryService {
                             .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
                     Warehouse warehouse = warehouseRepository.findById(request.warehouseId())
                             .orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
-                    return StockItem.builder().product(product).warehouse(warehouse).build();
+                    StockItem newItem = new StockItem();
+                    newItem.setProduct(product);
+                    newItem.setWarehouse(warehouse);
+                    newItem.setAvailableQuantity(BigDecimal.ZERO);
+                    newItem.setReservedQuantity(BigDecimal.ZERO);
+                    newItem.setDamagedQuantity(BigDecimal.ZERO);
+                    return newItem;
                 });
 
         BigDecimal change = request.quantity();
@@ -53,17 +65,16 @@ public class InventoryService {
         stockItem.setAvailableQuantity(newBalance);
         stockItemRepository.save(stockItem);
 
-        StockMovement movement = StockMovement.builder()
-                .product(stockItem.getProduct())
-                .warehouse(stockItem.getWarehouse())
-                .type(request.type())
-                .quantity(change)
-                .unit(stockItem.getProduct().getBaseUnit())
-                .balanceAfter(newBalance)
-                .referenceType("IDEMPOTENCY_KEY")
-                .referenceId(0L) // Simplified for now, should map to request.idempotencyKey()
-                .reason(request.reason())
-                .build();
+        StockMovement movement = new StockMovement();
+        movement.setProduct(stockItem.getProduct());
+        movement.setWarehouse(stockItem.getWarehouse());
+        movement.setType(request.type());
+        movement.setQuantity(change);
+        movement.setUnit(stockItem.getProduct().getBaseUnit());
+        movement.setBalanceAfter(newBalance);
+        movement.setReferenceType("IDEMPOTENCY_KEY");
+        movement.setReferenceId(0L); 
+        movement.setReason(request.reason());
         
         stockMovementRepository.save(movement);
     }

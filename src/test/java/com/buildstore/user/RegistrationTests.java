@@ -35,10 +35,7 @@ class RegistrationTests {
     void registerCustomer_shouldSucceed() throws Exception {
         String email = "unique_new_email_" + System.nanoTime() + "@example.com";
         
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail(email);
-        request.setPassword("password123");
-        request.setConfirmPassword("password123");
+        RegisterRequest request = new RegisterRequest(email, "password123", "password123");
 
         mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,10 +48,7 @@ class RegistrationTests {
     @Test
     void registerCustomer_emailTaken_shouldReturn400() throws Exception {
         // Attempt to register with an email that is already in Liquibase migration
-        RegisterRequest request = new RegisterRequest();
-        request.setEmail("user@example.com");
-        request.setPassword("password123");
-        request.setConfirmPassword("password123");
+        RegisterRequest request = new RegisterRequest("user@example.com", "password123", "password123");
 
         mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)

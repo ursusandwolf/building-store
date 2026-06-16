@@ -9,7 +9,6 @@ import com.buildstore.pricing.model.PriceListItem;
 import com.buildstore.pricing.repository.PriceListItemRepository;
 import com.buildstore.pricing.repository.PriceListRepository;
 import com.buildstore.product.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Service
-@RequiredArgsConstructor
 public class PriceListService {
 
     private final PriceListRepository priceListRepository;
@@ -25,14 +23,23 @@ public class PriceListService {
     private final ProductRepository productRepository;
     private final DiscountService discountService;
 
+    public PriceListService(PriceListRepository priceListRepository,
+                            PriceListItemRepository priceListItemRepository,
+                            ProductRepository productRepository,
+                            DiscountService discountService) {
+        this.priceListRepository = priceListRepository;
+        this.priceListItemRepository = priceListItemRepository;
+        this.productRepository = productRepository;
+        this.discountService = discountService;
+    }
+
     @Transactional
     public Long createPriceList(PriceListRequest request) {
-        PriceList priceList = PriceList.builder()
-                .name(request.name())
-                .startDate(request.startDate())
-                .endDate(request.endDate())
-                .active(true)
-                .build();
+        PriceList priceList = new PriceList();
+        priceList.setName(request.name());
+        priceList.setStartDate(request.startDate());
+        priceList.setEndDate(request.endDate());
+        priceList.setActive(true);
         return priceListRepository.save(priceList).getId();
     }
 
@@ -43,11 +50,10 @@ public class PriceListService {
         var product = productRepository.findById(request.productId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         
-        PriceListItem item = PriceListItem.builder()
-                .priceList(priceList)
-                .product(product)
-                .price(request.price())
-                .build();
+        PriceListItem item = new PriceListItem();
+        item.setPriceList(priceList);
+        item.setProduct(product);
+        item.setPrice(request.price());
         priceListItemRepository.save(item);
     }
 

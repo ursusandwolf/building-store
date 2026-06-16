@@ -48,15 +48,19 @@ class DiscountTests {
     @BeforeEach
     void setUp() {
         ProductCategory category = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
+                .orElseGet(() -> {
+                    ProductCategory cat = new ProductCategory();
+                    cat.setName("General");
+                    return categoryRepository.save(cat);
+                });
         
-        product = productRepository.save(Product.builder()
-                .sku("SKU-DISC")
-                .name("Discount Item")
-                .category(category)
-                .baseUnit(UnitOfMeasure.PIECE)
-                .status(ProductStatus.ACTIVE)
-                .build());
+        Product p = new Product();
+        p.setSku("SKU-DISC");
+        p.setName("Discount Item");
+        p.setCategory(category);
+        p.setBaseUnit(UnitOfMeasure.PIECE);
+        p.setStatus(ProductStatus.ACTIVE);
+        product = productRepository.save(p);
     }
 
     @Test

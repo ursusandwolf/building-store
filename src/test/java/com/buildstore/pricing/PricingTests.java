@@ -8,6 +8,7 @@ import com.buildstore.product.repository.ProductCategoryRepository;
 import com.buildstore.product.repository.ProductRepository;
 import com.buildstore.pricing.dto.PriceListRequest;
 import com.buildstore.pricing.dto.PriceListItemRequest;
+import com.buildstore.pricing.service.PriceListService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,20 +48,27 @@ class PricingTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private PriceListService priceListService;
+
     private Product product;
 
     @BeforeEach
     void setUp() {
         ProductCategory category = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
+                .orElseGet(() -> {
+                    ProductCategory cat = new ProductCategory();
+                    cat.setName("General");
+                    return categoryRepository.save(cat);
+                });
         
-        product = productRepository.save(Product.builder()
-                .sku("SKU-PRICE")
-                .name("Price Item")
-                .category(category)
-                .baseUnit(UnitOfMeasure.PIECE)
-                .status(ProductStatus.ACTIVE)
-                .build());
+        Product p = new Product();
+        p.setSku("SKU-PRICE");
+        p.setName("Price Item");
+        p.setCategory(category);
+        p.setBaseUnit(UnitOfMeasure.PIECE);
+        p.setStatus(ProductStatus.ACTIVE);
+        product = productRepository.save(p);
     }
 
     @Test

@@ -63,12 +63,11 @@ class MethodSecurityTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            AppUser user = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(PASSWORD))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(role))
-                    .build();
+            AppUser user = new AppUser();
+            user.setEmail(email);
+            user.setPasswordHash(passwordEncoder.encode(PASSWORD));
+            user.setStatus(UserStatus.ACTIVE);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
         }
     }

@@ -13,22 +13,31 @@ import com.buildstore.product.dto.ProductPackageRequest;
 import com.buildstore.product.dto.ProductPackageResponse;
 import com.buildstore.product.model.ProductPackage;
 import com.buildstore.product.repository.ProductPackageRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class ProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
     private final ProductRepository productRepository;
     private final ProductCategoryRepository categoryRepository;
     private final ProductPackageRepository productPackageRepository;
     private final ProductMapper productMapper;
+
+    public ProductService(ProductRepository productRepository,
+                          ProductCategoryRepository categoryRepository,
+                          ProductPackageRepository productPackageRepository,
+                          ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.productPackageRepository = productPackageRepository;
+        this.productMapper = productMapper;
+    }
 
     @Transactional
     public ProductResponse createProduct(ProductRequest request) {

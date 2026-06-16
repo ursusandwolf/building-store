@@ -2,15 +2,9 @@ package com.buildstore.customer.model;
 
 import com.buildstore.user.model.AppUser;
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "customers")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Customer {
 
     @Id
@@ -23,4 +17,30 @@ public class Customer {
 
     @Column(name = "contact_name")
     private String contactName;
+
+    public Customer() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
 }

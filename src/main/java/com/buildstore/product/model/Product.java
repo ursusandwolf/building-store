@@ -1,7 +1,6 @@
 package com.buildstore.product.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,11 +9,6 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
 
@@ -25,7 +19,7 @@ public class Product {
     @Column(nullable = false, unique = true, length = 50)
     private String sku;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,11 +33,11 @@ public class Product {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "base_unit", nullable = false)
+    @Column(nullable = false, length = 50)
     private UnitOfMeasure baseUnit;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private ProductStatus status;
 
     @CreatedDate
@@ -56,4 +50,39 @@ public class Product {
 
     @Version
     private Long version;
+
+    public Product() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getSku() { return sku; }
+    public void setSku(String sku) { this.sku = sku; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public ProductCategory getCategory() { return category; }
+    public void setCategory(ProductCategory category) { this.category = category; }
+
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public UnitOfMeasure getBaseUnit() { return baseUnit; }
+    public void setBaseUnit(UnitOfMeasure baseUnit) { this.baseUnit = baseUnit; }
+
+    public ProductStatus getStatus() { return status; }
+    public void setStatus(ProductStatus status) { this.status = status; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+    public Instant getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
+
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 }

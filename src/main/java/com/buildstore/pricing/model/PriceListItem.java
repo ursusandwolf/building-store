@@ -2,17 +2,10 @@ package com.buildstore.pricing.model;
 
 import com.buildstore.product.model.Product;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "price_list_items")
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PriceListItem {
 
     @Id
@@ -29,4 +22,38 @@ public class PriceListItem {
 
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal price;
+
+    public PriceListItem() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public PriceList getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(PriceList priceList) {
+        this.priceList = priceList;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

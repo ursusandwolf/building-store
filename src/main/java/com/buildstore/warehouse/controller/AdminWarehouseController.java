@@ -4,7 +4,6 @@ import com.buildstore.warehouse.dto.WarehouseRequest;
 import com.buildstore.warehouse.dto.WarehouseResponse;
 import com.buildstore.warehouse.service.WarehouseService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/warehouses")
-@RequiredArgsConstructor
 public class AdminWarehouseController {
 
     private final WarehouseService warehouseService;
+
+    public AdminWarehouseController(WarehouseService warehouseService) {
+        this.warehouseService = warehouseService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

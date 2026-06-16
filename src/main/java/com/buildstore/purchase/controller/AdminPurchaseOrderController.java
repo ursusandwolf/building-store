@@ -4,7 +4,6 @@ import com.buildstore.purchase.dto.PurchaseOrderRequest;
 import com.buildstore.purchase.dto.PurchaseOrderResponse;
 import com.buildstore.purchase.service.PurchaseOrderService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/purchase-orders")
-@RequiredArgsConstructor
 public class AdminPurchaseOrderController {
 
     private final PurchaseOrderService purchaseOrderService;
+
+    public AdminPurchaseOrderController(PurchaseOrderService purchaseOrderService) {
+        this.purchaseOrderService = purchaseOrderService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

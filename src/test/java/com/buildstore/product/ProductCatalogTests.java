@@ -2,10 +2,12 @@ package com.buildstore.product;
 
 import com.buildstore.product.dto.ProductPackageRequest;
 import com.buildstore.product.dto.ProductRequest;
+import com.buildstore.product.model.Product;
 import com.buildstore.product.model.ProductCategory;
 import com.buildstore.product.model.ProductStatus;
 import com.buildstore.product.model.UnitOfMeasure;
 import com.buildstore.product.repository.ProductCategoryRepository;
+import com.buildstore.product.repository.ProductRepository;
 import com.buildstore.user.dto.AuthResponse;
 import com.buildstore.user.dto.LoginRequest;
 import com.buildstore.user.model.AppUser;
@@ -25,8 +27,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ProductCatalogTests {
 
@@ -67,16 +72,16 @@ class ProductCatalogTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeException("Role not found: ROLE_ADMIN"));
-            AppUser admin = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(password))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(adminRole))
-                    .build();
+            AppUser admin = new AppUser();
+            admin.setEmail(email);
+            admin.setPasswordHash(passwordEncoder.encode(password));
+            admin.setStatus(UserStatus.ACTIVE);
+            admin.setRoles(Set.of(adminRole));
             userRepository.save(admin);
         }
 
-        LoginRequest loginRequest = LoginRequest.builder()
+        LoginRequest.LoginRequestBuilder loginBuilder = LoginRequest.builder();
+        LoginRequest loginRequest = loginBuilder
                 .email(email)
                 .password(password)
                 .build();
@@ -93,12 +98,12 @@ class ProductCatalogTests {
         adminToken = authResponse.accessToken();
 
         generalCategory = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(
-                        ProductCategory.builder()
-                                .name("General")
-                                .description("General category")
-                                .build()
-                ));
+                .orElseGet(() -> {
+                    ProductCategory cat = new ProductCategory();
+                    cat.setName("General");
+                    cat.setDescription("General category");
+                    return categoryRepository.save(cat);
+                });
     }
 
     @Test

@@ -4,20 +4,18 @@ import com.buildstore.common.validation.FieldMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
-@Data
 @FieldMatch(first = "password", second = "confirmPassword", message = "Passwords do not match")
-public class RegisterRequest {
+public record RegisterRequest(
     @Email
     @NotBlank
-    private String email;
+    String email,
 
     @NotBlank
     @Size(min = 8, max = 32)
-    private String password;
+    String password,
 
     @NotBlank
     @Size(min = 8, max = 32)
-    private String confirmPassword;
-}
+    String confirmPassword
+) {}

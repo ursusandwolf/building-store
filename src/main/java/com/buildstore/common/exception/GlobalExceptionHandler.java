@@ -23,97 +23,105 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
 
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .code("VALIDATION_FAILED")
-                .message("Validation failed: " + details)
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "VALIDATION_FAILED",
+                "Validation failed: " + details,
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .code("BAD_REQUEST")
-                .message(ex.getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "BAD_REQUEST",
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .code("UNAUTHORIZED")
-                .message("Invalid email or password")
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "UNAUTHORIZED",
+                "Invalid email or password",
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.FORBIDDEN.value())
-                .code("FORBIDDEN")
-                .message("Access denied: " + ex.getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.FORBIDDEN.value(),
+                "FORBIDDEN",
+                "Access denied: " + ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<ErrorResponse> handleRegistration(RegistrationException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .code("REGISTRATION_FAILED")
-                .message(ex.getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "REGISTRATION_FAILED",
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .code("RESOURCE_NOT_FOUND")
-                .message(ex.getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "RESOURCE_NOT_FOUND",
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.CONFLICT.value())
-                .code("CONFLICT")
-                .message("Data integrity violation: " + ex.getRootCause().getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.CONFLICT.value(),
+                "CONFLICT",
+                "Data integrity violation: " + (ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage()),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
-                .timestamp(Instant.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .code("INTERNAL_SERVER_ERROR")
-                .message(ex.getMessage())
-                .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build();
+        ErrorResponse error = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "INTERNAL_SERVER_ERROR",
+                ex.getMessage(),
+                ((ServletWebRequest) request).getRequest().getRequestURI(),
+                null
+        );
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -6,7 +6,6 @@ import com.buildstore.product.dto.ProductRequest;
 import com.buildstore.product.dto.ProductResponse;
 import com.buildstore.product.service.ProductService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/products")
-@RequiredArgsConstructor
 public class AdminProductController {
 
     private final ProductService productService;
+
+    public AdminProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

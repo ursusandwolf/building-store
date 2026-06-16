@@ -106,28 +106,36 @@ class GoodsReceiptTests {
     void setUp() throws Exception {
         adminToken = createToken("admin_gr@test.com", RoleName.ROLE_ADMIN);
 
-        Supplier supplier = supplierRepository.save(Supplier.builder().name("Test Supplier").build());
+        Supplier supplier = new Supplier();
+        supplier.setName("Test Supplier");
+        supplier = supplierRepository.save(supplier);
         ProductCategory category = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
-        Product product = productRepository.save(Product.builder()
-                .sku("SKU-GR")
-                .name("GR Item")
-                .category(category)
-                .baseUnit(UnitOfMeasure.PIECE)
-                .status(ProductStatus.ACTIVE)
-                .build());
-        warehouseRepository.save(Warehouse.builder().code("WH-TEST").name("Test Warehouse").build());
+                .orElseGet(() -> {
+                    ProductCategory newCategory = new ProductCategory();
+                    newCategory.setName("General");
+                    return categoryRepository.save(newCategory);
+                });
+        Product product = new Product();
+        product.setSku("SKU-GR");
+        product.setName("GR Item");
+        product.setCategory(category);
+        product.setBaseUnit(UnitOfMeasure.PIECE);
+        product.setStatus(ProductStatus.ACTIVE);
+        product = productRepository.save(product);
+        Warehouse warehouse = new Warehouse();
+        warehouse.setCode("WH-TEST");
+        warehouse.setName("Test Warehouse");
+        warehouseRepository.save(warehouse);
 
-        purchaseOrder = purchaseOrderRepository.save(PurchaseOrder.builder()
-                .supplier(supplier)
-                .status(com.buildstore.purchase.model.PurchaseOrderStatus.DRAFT)
-                .build());
-        PurchaseOrderLine line = com.buildstore.purchase.model.PurchaseOrderLine.builder()
-                .purchaseOrder(purchaseOrder)
-                .product(product)
-                .quantity(new BigDecimal("10.0"))
-                .unitCost(new BigDecimal("5.0"))
-                .build();
+        purchaseOrder = new PurchaseOrder();
+        purchaseOrder.setSupplier(supplier);
+        purchaseOrder.setStatus(com.buildstore.purchase.model.PurchaseOrderStatus.DRAFT);
+        purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
+        PurchaseOrderLine line = new PurchaseOrderLine();
+        line.setPurchaseOrder(purchaseOrder);
+        line.setProduct(product);
+        line.setQuantity(new BigDecimal("10.0"));
+        line.setUnitCost(new BigDecimal("5.0"));
         purchaseOrder.setLines(new java.util.ArrayList<>(List.of(line)));
         purchaseOrderRepository.save(purchaseOrder);
     }
@@ -137,12 +145,11 @@ class GoodsReceiptTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            AppUser user = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(password))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(role))
-                    .build();
+            AppUser user = new AppUser();
+            user.setEmail(email);
+            user.setPasswordHash(passwordEncoder.encode(password));
+            user.setStatus(UserStatus.ACTIVE);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
         }
 

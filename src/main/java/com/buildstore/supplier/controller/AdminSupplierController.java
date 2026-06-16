@@ -4,7 +4,6 @@ import com.buildstore.supplier.dto.SupplierRequest;
 import com.buildstore.supplier.dto.SupplierResponse;
 import com.buildstore.supplier.service.SupplierService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/suppliers")
-@RequiredArgsConstructor
 public class AdminSupplierController {
 
     private final SupplierService supplierService;
+
+    public AdminSupplierController(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

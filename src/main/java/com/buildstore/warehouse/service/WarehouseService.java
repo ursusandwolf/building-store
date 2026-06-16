@@ -6,20 +6,24 @@ import com.buildstore.warehouse.dto.WarehouseResponse;
 import com.buildstore.warehouse.mapper.WarehouseMapper;
 import com.buildstore.warehouse.model.Warehouse;
 import com.buildstore.warehouse.repository.WarehouseRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class WarehouseService {
 
+    private static final Logger log = LoggerFactory.getLogger(WarehouseService.class);
     private final WarehouseRepository warehouseRepository;
     private final WarehouseMapper warehouseMapper;
+
+    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseMapper warehouseMapper) {
+        this.warehouseRepository = warehouseRepository;
+        this.warehouseMapper = warehouseMapper;
+    }
 
     @Transactional
     public WarehouseResponse createWarehouse(WarehouseRequest request) {
