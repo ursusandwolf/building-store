@@ -43,5 +43,10 @@ Educational project building a backend for a building materials store with Sprin
 - All tests passing.
 
 ## Pending Items
-- Iteration 14: Sales order draft.
+- Iteration 14: Sales order draft (implemented).
+- Iteration 15: Audit module (implemented).
+- All tests passing.
+
+## Pending Items
+- Audit log integration for other critical operations.
 ...

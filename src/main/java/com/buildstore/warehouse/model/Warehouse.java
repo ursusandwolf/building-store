@@ -2,6 +2,7 @@ package com.buildstore.warehouse.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.AccessLevel;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +15,6 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Warehouse {
 
     @Id

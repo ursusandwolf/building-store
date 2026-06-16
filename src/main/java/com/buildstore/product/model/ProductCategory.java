@@ -1,14 +1,16 @@
 package com.buildstore.product.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "product_categories")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductCategory {
 
     @Id

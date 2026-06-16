@@ -1,5 +1,6 @@
 package com.buildstore.order;
 
+import com.buildstore.inventory.service.InventoryService;
 import com.buildstore.order.dto.SalesOrderRequest;
 import com.buildstore.product.model.Product;
 import com.buildstore.product.model.ProductCategory;
@@ -18,6 +19,8 @@ import com.buildstore.user.model.RoleName;
 import com.buildstore.user.model.UserStatus;
 import com.buildstore.user.repository.RoleRepository;
 import com.buildstore.user.repository.UserRepository;
+import com.buildstore.warehouse.model.Warehouse;
+import com.buildstore.warehouse.repository.WarehouseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +39,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,45 +49,77 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class OrderTests {
 
+    @org.springframework.boot.test.context.TestConfiguration
+    static class TestConfig {
+        @org.springframework.context.annotation.Bean
+        public org.springframework.data.domain.AuditorAware<String> auditorProvider() {
+            return () -> {
+                org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+                if (auth == null || !auth.isAuthenticated()) return java.util.Optional.of("SYSTEM");
+                return java.util.Optional.of(auth.getName());
+            };
+        }
+    }
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private ProductCategoryRepository categoryRepository;
-
     @Autowired
     private PriceListService priceListService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private WarehouseRepository warehouseRepository;
+    @Autowired
+    private InventoryService inventoryService;
     @Autowired
     private ObjectMapper objectMapper;
 
     private String customerToken;
     private Product product;
+    private Warehouse warehouse;
 
     @BeforeEach
     void setUp() throws Exception {
         customerToken = createToken("cust_ord@test.com", RoleName.ROLE_CUSTOMER);
+
+        ProductCategory category = categoryRepository.findByName("General")
+                .orElseGet(() -> {
+                    ProductCategory c = new ProductCategory();
+                    c.setName("General");
+                    return categoryRepository.save(c);
+                });
+
+        product = new Product();
+        product.setSku("SKU-ORD");
+        product.setName("Order Item");
+        product.setCategory(category);
+        product.setBaseUnit(UnitOfMeasure.PIECE);
+        product.setStatus(ProductStatus.ACTIVE);
+        product = productRepository.save(product);
+
+        warehouse = new Warehouse();
+        warehouse.setCode("WH-ORD");
+        warehouse.setName("Order Warehouse");
+        warehouse.setActive(true);
+        warehouse = warehouseRepository.save(warehouse);
         
-        ProductCategory category = categoryRepository.save(ProductCategory.builder().name("General").build());
-        product = productRepository.save(Product.builder()
-                .sku("SKU-ORD")
-                .name("Order Item")
-                .category(category)
-                .baseUnit(UnitOfMeasure.PIECE)
-                .status(ProductStatus.ACTIVE)
-                .build());
+        inventoryService.adjustStock(new com.buildstore.inventory.dto.StockAdjustmentRequest(
+                product.getId(),
+                warehouse.getId(),
+                com.buildstore.inventory.model.StockMovementType.PURCHASE_RECEIPT,
+                new BigDecimal("100.0"),
+                "Initial stock",
+                "init-key"
+        ));
 
         // Create PriceList for item
         Long priceListId = priceListService.createPriceList(new PriceListRequest(
@@ -101,19 +135,15 @@ class OrderTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            AppUser user = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(password))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(role))
-                    .build();
+            AppUser user = new AppUser();
+            user.setEmail(email);
+            user.setPasswordHash(passwordEncoder.encode(password));
+            user.setStatus(UserStatus.ACTIVE);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
         }
 
-        LoginRequest loginRequest = LoginRequest.builder()
-                .email(email)
-                .password(password)
-                .build();
+        LoginRequest loginRequest = new LoginRequest(email, password);
 
         String responseJson = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -132,7 +162,8 @@ class OrderTests {
         var request = new com.buildstore.order.dto.SalesOrderRequest(
                 List.of(new com.buildstore.order.dto.SalesOrderLineRequest(
                         product.getId(),
-                        new BigDecimal("2.0")
+                        new BigDecimal("2.0"),
+                        warehouse.getId()
                 ))
         );
 

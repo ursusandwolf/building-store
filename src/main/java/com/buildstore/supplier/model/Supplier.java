@@ -2,13 +2,13 @@ package com.buildstore.supplier.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.AccessLevel;
 
 @Entity
 @Table(name = "suppliers")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Supplier {
 
     @Id

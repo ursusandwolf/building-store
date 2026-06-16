@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="v015-create-audit-events" author="alex">
+        <createTable tableName="audit_events">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="actor_type" type="VARCHAR(50)"/>
+            <column name="actor_id" type="BIGINT"/>
+            <column name="action" type="VARCHAR(255)"/>
+            <column name="subject_type" type="VARCHAR(50)"/>
+            <column name="subject_id" type="BIGINT"/>
+            <column name="request_id" type="VARCHAR(255)"/>
+            <column name="correlation_id" type="VARCHAR(255)"/>
+            <column name="before_state" type="TEXT"/>
+            <column name="after_state" type="TEXT"/>
+            <column name="reason" type="VARCHAR(255)"/>
+            <column name="occurred_at" type="TIMESTAMP"/>
+            <column name="ip_address" type="VARCHAR(50)"/>
+            <column name="user_agent" type="VARCHAR(255)"/>
+        </createTable>
+        <createIndex tableName="audit_events" indexName="idx_audit_events_actor">
+            <column name="actor_id"/>
+            <column name="occurred_at"/>
+        </createIndex>
+        <createIndex tableName="audit_events" indexName="idx_audit_events_subject">
+            <column name="subject_type"/>
+            <column name="subject_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

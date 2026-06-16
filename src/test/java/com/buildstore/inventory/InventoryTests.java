@@ -97,22 +97,30 @@ class InventoryTests {
         adminToken = createToken("admin_inv@test.com", RoleName.ROLE_ADMIN);
 
         ProductCategory category = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
+                .orElseGet(() -> {
+                    ProductCategory c = new ProductCategory();
+                    c.setName("General");
+                    return categoryRepository.save(c);
+                });
         
         product = productRepository.findBySku("SKU-INV")
-                .orElseGet(() -> productRepository.save(Product.builder()
-                        .sku("SKU-INV")
-                        .name("Inventory Item")
-                        .category(category)
-                        .baseUnit(UnitOfMeasure.PIECE)
-                        .status(ProductStatus.ACTIVE)
-                        .build()));
+                .orElseGet(() -> {
+                    Product p = new Product();
+                    p.setSku("SKU-INV");
+                    p.setName("Inventory Item");
+                    p.setCategory(category);
+                    p.setBaseUnit(UnitOfMeasure.PIECE);
+                    p.setStatus(ProductStatus.ACTIVE);
+                    return productRepository.save(p);
+                });
 
         warehouse = warehouseRepository.findByCode("WH-TEST")
-                .orElseGet(() -> warehouseRepository.save(Warehouse.builder()
-                        .code("WH-TEST")
-                        .name("Test Warehouse")
-                        .build()));
+                .orElseGet(() -> {
+                    Warehouse w = new Warehouse();
+                    w.setCode("WH-TEST");
+                    w.setName("Test Warehouse");
+                    return warehouseRepository.save(w);
+                });
     }
 
     private String createToken(String email, RoleName roleName) throws Exception {
@@ -120,19 +128,15 @@ class InventoryTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            AppUser user = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(password))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(role))
-                    .build();
+            AppUser user = new AppUser();
+            user.setEmail(email);
+            user.setPasswordHash(passwordEncoder.encode(password));
+            user.setStatus(UserStatus.ACTIVE);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
         }
 
-        LoginRequest loginRequest = LoginRequest.builder()
-                .email(email)
-                .password(password)
-                .build();
+        LoginRequest loginRequest = new LoginRequest(email, password);
 
         String responseJson = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)

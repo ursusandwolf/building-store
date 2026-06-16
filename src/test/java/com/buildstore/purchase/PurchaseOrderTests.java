@@ -97,17 +97,24 @@ class PurchaseOrderTests {
     void setUp() throws Exception {
         adminToken = createToken("admin_po@test.com", RoleName.ROLE_ADMIN);
 
-        supplier = supplierRepository.save(Supplier.builder().name("Test Supplier").build());
+        Supplier s = new Supplier();
+        s.setName("Test Supplier");
+        supplier = supplierRepository.save(s);
         
         ProductCategory category = categoryRepository.findByName("General")
-                .orElseGet(() -> categoryRepository.save(ProductCategory.builder().name("General").build()));
-        product = productRepository.save(Product.builder()
-                .sku("SKU-PO")
-                .name("PO Item")
-                .category(category)
-                .baseUnit(UnitOfMeasure.PIECE)
-                .status(ProductStatus.ACTIVE)
-                .build());
+                .orElseGet(() -> {
+                    ProductCategory c = new ProductCategory();
+                    c.setName("General");
+                    return categoryRepository.save(c);
+                });
+        
+        Product p = new Product();
+        p.setSku("SKU-PO");
+        p.setName("PO Item");
+        p.setCategory(category);
+        p.setBaseUnit(UnitOfMeasure.PIECE);
+        p.setStatus(ProductStatus.ACTIVE);
+        product = productRepository.save(p);
     }
 
     private String createToken(String email, RoleName roleName) throws Exception {
@@ -115,19 +122,15 @@ class PurchaseOrderTests {
         if (userRepository.findByEmail(email).isEmpty()) {
             Role role = roleRepository.findByName(roleName)
                     .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            AppUser user = AppUser.builder()
-                    .email(email)
-                    .passwordHash(passwordEncoder.encode(password))
-                    .status(UserStatus.ACTIVE)
-                    .roles(Set.of(role))
-                    .build();
+            AppUser user = new AppUser();
+            user.setEmail(email);
+            user.setPasswordHash(passwordEncoder.encode(password));
+            user.setStatus(UserStatus.ACTIVE);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
         }
 
-        LoginRequest loginRequest = LoginRequest.builder()
-                .email(email)
-                .password(password)
-                .build();
+        LoginRequest loginRequest = new LoginRequest(email, password);
 
         String responseJson = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)

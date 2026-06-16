@@ -1,5 +1,7 @@
 package com.buildstore.order.service;
 
+import com.buildstore.audit.model.AuditEvent;
+import com.buildstore.audit.service.AuditService;
 import com.buildstore.common.exception.ResourceNotFoundException;
 import com.buildstore.inventory.service.ReservationService;
 import com.buildstore.order.dto.SalesOrderRequest;
@@ -8,6 +10,7 @@ import com.buildstore.order.mapper.SalesOrderMapper;
 import com.buildstore.order.model.SalesOrder;
 import com.buildstore.order.model.SalesOrderLine;
 import com.buildstore.order.model.SalesOrderStatus;
+import com.buildstore.order.repository.SalesOrderLineRepository;
 import com.buildstore.order.repository.SalesOrderRepository;
 import com.buildstore.pricing.service.PriceListService;
 import com.buildstore.product.repository.ProductRepository;
@@ -26,27 +29,33 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SalesOrderService {
 
     private final SalesOrderRepository salesOrderRepository;
+    private final SalesOrderLineRepository salesOrderLineRepository;
     private final ProductRepository productRepository;
     private final PriceListService priceListService;
     private final UserRepository userRepository;
     private final SalesOrderMapper salesOrderMapper;
     private final ReservationService reservationService;
     private final WarehouseRepository warehouseRepository;
+    private final AuditService auditService;
 
     public SalesOrderService(SalesOrderRepository salesOrderRepository,
+                            SalesOrderLineRepository salesOrderLineRepository,
                             ProductRepository productRepository,
                             PriceListService priceListService,
                             UserRepository userRepository,
                             SalesOrderMapper salesOrderMapper,
                             ReservationService reservationService,
-                            WarehouseRepository warehouseRepository) {
+                            WarehouseRepository warehouseRepository,
+                            AuditService auditService) {
         this.salesOrderRepository = salesOrderRepository;
+        this.salesOrderLineRepository = salesOrderLineRepository;
         this.productRepository = productRepository;
         this.priceListService = priceListService;
         this.userRepository = userRepository;
         this.salesOrderMapper = salesOrderMapper;
         this.reservationService = reservationService;
         this.warehouseRepository = warehouseRepository;
+        this.auditService = auditService;
     }
 
     @Transactional
@@ -81,6 +90,9 @@ public class SalesOrderService {
             line.setUnit(product.getBaseUnit());
             line.setWarehouse(warehouse);
             
+            // Persist line explicitly
+            line = salesOrderLineRepository.save(line);
+            
             reservationService.createReservation(finalOrder, line, product, warehouse, lineRequest.quantity());
             
             return line;
@@ -88,7 +100,18 @@ public class SalesOrderService {
 
         order.setLines(new ArrayList<>(lines));
         order.setTotalAmount(total.get());
-        return salesOrderMapper.toResponse(salesOrderRepository.save(order));
+        SalesOrder savedOrder = salesOrderRepository.save(order);
+        
+        auditService.logEvent(AuditEvent.builder()
+                .actorType("CUSTOMER")
+                .actorId(customer.getId())
+                .action("SALES_ORDER_CREATED")
+                .subjectType("SALES_ORDER")
+                .subjectId(savedOrder.getId())
+                .reason("Order created via API")
+                .build());
+
+        return salesOrderMapper.toResponse(savedOrder);
     }
 
     @Transactional(readOnly = true)

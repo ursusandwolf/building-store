@@ -2,13 +2,13 @@ package com.buildstore.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.AccessLevel;
 
 @Entity
 @Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Role {
 
     @Id

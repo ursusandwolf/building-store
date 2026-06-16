@@ -1,11 +1,15 @@
 # Changelog
 
 ## [0.15.0-SNAPSHOT] - 2026-06-16
+### Added
+- Audit module implementation (Iteration 15).
+- `AuditEvent` entity, repository, and `AuditService`.
+- Liquibase migration `v015-create-audit-events.xml`.
+- Integrated `AuditService` into `SalesOrderService`.
 ### Changed
-- Refactored DTOs and Entities to modern Java standards.
-- Migrated all DTOs to use Java Records for immutability.
-- Migrated JPA Entities to use Lombok annotations (@Getter, @Setter, @NoArgsConstructor, @AllArgsConstructor) to reduce boilerplate.
-- Verified compilation and build stability with `mvn compile`.
+- Refactored JPA entities to remove `@Builder` and `@AllArgsConstructor` (following best practices).
+- Updated tests to use explicit instantiation via constructors and setters.
+- Refactored `SalesOrderService` to persist `SalesOrderLine` before `StockReservation` creation.
 
 ## [0.14.0-SNAPSHOT] - 2026-06-16
 ### Added
