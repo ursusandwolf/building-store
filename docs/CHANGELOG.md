@@ -2,11 +2,14 @@
 
 ## [0.9.0-SNAPSHOT] - 2026-06-16
 ### Added
-- Inventory management core implementation (Iteration 9, part 1).
+- Inventory management implementation (Iteration 9).
 - `StockItem` JPA entity for tracking inventory levels per product and warehouse.
 - `StockMovement` entity for immutable history of inventory changes.
 - `StockMovementType` enum.
 - `StockItemRepository` with pessimistic locking for concurrency safety.
+- `InventoryService` for stock adjustments (including negative stock prevention).
+- `AdminInventoryController` for stock adjustments.
+- `InventoryTests` for verifying adjustment workflow and concurrency safety.
 - Liquibase migration `v005-create-inventory.xml`.
 
 ## [0.8.0-SNAPSHOT] - 2026-06-16

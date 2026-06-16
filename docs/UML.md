@@ -58,13 +58,20 @@ com.buildstore
 │   └── service
 │       └── WarehouseService
 ├── inventory
+│   ├── controller
+│   │   └── AdminInventoryController
+│   ├── dto
+│   │   ├── StockAdjustmentRequest
+│   │   └── StockMovementResponse
 │   ├── model
 │   │   ├── StockItem
 │   │   ├── StockMovement
 │   │   └── StockMovementType
-│   └── repository
-│       ├── StockItemRepository
-│       └── StockMovementRepository
+│   ├── repository
+│   │   ├── StockItemRepository
+│   │   └── StockMovementRepository
+│   └── service
+│       └── InventoryService
 ├── security
 │   ├── config
 │   │   └── SecurityConfig
