@@ -93,6 +93,21 @@ com.buildstore
 │   └── service
 │       ├── PurchaseOrderService
 │       └── GoodsReceiptService
+├── pricing
+│   ├── controller
+│   │   └── PriceListController
+│   ├── dto
+│   │   ├── PriceListRequest
+│   │   ├── PriceListItemRequest
+│   │   └── PriceResponse
+│   ├── model
+│   │   ├── PriceList
+│   │   └── PriceListItem
+│   ├── repository
+│   │   ├── PriceListRepository
+│   │   └── PriceListItemRepository
+│   └── service
+│       └── PriceListService
 ├── inventory
 │   ├── controller
 │   │   └── AdminInventoryController

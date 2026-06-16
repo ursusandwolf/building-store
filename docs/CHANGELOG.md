@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.12.0-SNAPSHOT] - 2026-06-16
+### Added
+- Price lists implementation (Iteration 12).
+- `PriceList` and `PriceListItem` entities.
+- `PriceListService` for managing prices and `getActivePrice` logic (active, valid time range).
+- `PriceListController` for admin management of prices and public price lookups.
+- Liquibase migration `v008-create-price-lists.xml`.
+- Integration tests in `PricingTests`.
+
 ## [0.11.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Goods receipt implementation (Iteration 11).

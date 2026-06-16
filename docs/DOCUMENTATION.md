@@ -11,6 +11,7 @@
 - `GET /api/catalog/products`: Returns a list of all active products.
 - `GET /api/catalog/products/{id}`: Returns details of a specific active product by ID.
 - `GET /api/catalog/products/{id}/packages`: Returns a list of packages for a specific active product.
+- `GET /api/catalog/products/{id}/price`: Returns the active price for a specific product.
 
 ### Private
 - `GET /api/private/hello`: Returns a greeting (requires JWT Bearer token).
@@ -31,6 +32,8 @@
 - `POST /api/admin/purchase-orders`: Creates a new purchase order (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
 - `GET /api/admin/purchase-orders`: Returns all purchase orders (requires `ROLE_ADMIN` or `ROLE_PURCHASING_MANAGER`).
 - `POST /api/admin/purchase-orders/{id}/goods-receipts`: Processes goods receipt for an order (requires `ROLE_ADMIN` or `ROLE_WAREHOUSE_MANAGER`).
+- `POST /api/admin/price-lists`: Creates a new price list (requires `ROLE_ADMIN` role).
+- `POST /api/admin/price-lists/{id}/items`: Adds an item to a price list (requires `ROLE_ADMIN` role).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).
