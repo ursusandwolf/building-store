@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /api/catalog/
+Disallow: /api/auth/
+Disallow: /api/admin/
+Disallow: /api/private/
+Disallow: /api/employees/
