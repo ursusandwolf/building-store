@@ -17,6 +17,9 @@ com.buildstore
 │   │   └── Customer
 │   └── repository
 │       └── CustomerRepository
+├── employee
+│   └── controller
+│       └── EmployeeController
 ├── security
 │   ├── config
 │   │   └── SecurityConfig
@@ -28,7 +31,8 @@ com.buildstore
 │   └── JwtAuthenticationEntryPoint
 └── user
     ├── controller
-    │   └── AuthController
+    │   ├── AuthController
+    │   └── AdminUserController
     ├── dto
     │   ├── RegisterRequest
     │   ├── LoginRequest

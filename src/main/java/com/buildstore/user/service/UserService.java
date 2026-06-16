@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -53,5 +54,13 @@ public class UserService {
 
         customerRepository.save(customer); // Saves both User (via cascade/persistence context) and Customer
         return userMapper.toResponse(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAllUsers() {
+        log.info("Fetching all users for admin");
+        return userRepository.findAll().stream()
+                .map(userMapper::toResponse)
+                .toList();
     }
 }

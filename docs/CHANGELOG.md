@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.0-SNAPSHOT] - 2026-06-16
+### Added
+- Method Security and Employee Roles (Iteration 5).
+- Enabled method security with `@EnableMethodSecurity`.
+- Added request-level and method-level (using `@PreAuthorize`) authorization for endpoints.
+- `AdminUserController` with `GET /api/admin/users` (restricted to `ROLE_ADMIN`).
+- `EmployeeController` with `GET /api/employees/me` (restricted to employee roles: sales manager, warehouse manager, purchasing manager, accountant, auditor, admin).
+- Enhanced `UserResponse` DTO to return user's roles.
+- `MethodSecurityTests` verifying proper role isolation (e.g. customer vs employee, accountant vs admin).
+
 ## [0.0.1-SNAPSHOT] - 2026-06-14
 ### Added
 - Initial project skeleton (Iteration 0).

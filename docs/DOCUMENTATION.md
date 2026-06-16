@@ -12,9 +12,16 @@
 ### Private
 - `GET /api/private/hello`: Returns a greeting (requires JWT Bearer token).
 
+### Admin
+- `GET /api/admin/users`: Returns a list of all users with their roles (requires `ROLE_ADMIN` role).
+
+### Employee
+- `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).
+
 ## Security
 - **Authentication**: Stateless JWT.
 - **Authorization**: Bearer token in `Authorization` header.
+- **Role-based Security**: Layered security using requestMatchers in `SecurityFilterChain` for URL patterns and `@EnableMethodSecurity` / `@PreAuthorize` on controller methods.
 - **Password Storage**: BCrypt hashing.
 - **Account Checks**: User status (ACTIVE, SUSPENDED, CLOSED, etc.) is checked on every request.
 
