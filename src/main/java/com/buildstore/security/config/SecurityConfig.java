@@ -37,6 +37,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/public/**", "/api/auth/**", "/api/catalog/**").permitAll()
                 .requestMatchers("/robots.txt", "/favicon.ico").permitAll()
+                .requestMatchers("/api/admin/warehouses/**").hasAnyRole("ADMIN", "WAREHOUSE_MANAGER", "AUDITOR")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/employees/**").hasAnyRole("SALES_MANAGER", "WAREHOUSE_MANAGER", "PURCHASING_MANAGER", "ACCOUNTANT", "AUDITOR", "ADMIN")
                 .requestMatchers("/api/private/**").authenticated()

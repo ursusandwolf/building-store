@@ -43,6 +43,20 @@ com.buildstore
 │   │   └── ProductPackageRepository
 │   └── service
 │       └── ProductService
+├── warehouse
+│   ├── controller
+│   │   └── AdminWarehouseController
+│   ├── dto
+│   │   ├── WarehouseRequest
+│   │   └── WarehouseResponse
+│   ├── mapper
+│   │   └── WarehouseMapper
+│   ├── model
+│   │   └── Warehouse
+│   ├── repository
+│   │   └── WarehouseRepository
+│   └── service
+│       └── WarehouseService
 ├── security
 │   ├── config
 │   │   └── SecurityConfig

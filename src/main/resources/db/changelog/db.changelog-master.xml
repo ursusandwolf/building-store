@@ -8,5 +8,5 @@
     <include file="db/changelog/migrations/v001-create-users-and-roles.xml"/>
     <include file="db/changelog/migrations/v002-create-product-and-category.xml"/>
     <include file="db/changelog/migrations/v003-create-product-packages.xml"/>
-
-</databaseChangeLog>
+    <include file="db/changelog/migrations/v004-create-warehouses.xml"/>
+    </databaseChangeLog>

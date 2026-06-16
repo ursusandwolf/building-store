@@ -14,7 +14,8 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 4: JWT Authentication - COMPLETED.
 - Iteration 5: Method security and employee roles - COMPLETED.
 - Iteration 6: Product catalog - COMPLETED.
-- **Iteration 7: Units and product packages** - COMPLETED.
+- Iteration 7: Units and product packages - COMPLETED.
+- **Iteration 8: Warehouses** - COMPLETED.
 - Package refactored to `com.buildstore`.
 - `User` entity renamed to `AppUser`.
 - Customer registration implemented with DTO validation.
@@ -26,9 +27,10 @@ Educational project building a backend for a building materials store with Sprin
 - Catalog endpoints implemented with proper validations and access controls.
 - Product packages and units implemented with admin and catalog endpoints.
 - Proper mapping of boolean fields in product packages (defaultForSale, defaultForPurchase).
+- Warehouse management implemented with restricted access (Admin, Warehouse Manager, Auditor).
 - All tests passing.
 
 ## Pending Items
-- Iteration 8: Warehouses.
 - Iteration 9: StockItem and stock movement.
+- Iteration 10: Pricing.
 ...

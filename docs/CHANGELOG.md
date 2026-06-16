@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0-SNAPSHOT] - 2026-06-16
+### Added
+- Warehouse management implementation (Iteration 8).
+- `Warehouse` JPA entity with code, name, and status.
+- `WarehouseRepository`, `WarehouseService`, and `AdminWarehouseController`.
+- Liquibase migration `v004-create-warehouses.xml`.
+- Role-based access control for warehouses:
+    - Admin: Full CRUD access.
+    - Warehouse Manager & Auditor: Read-only access.
+    - Customer: No access.
+- `WarehouseTests` for verification.
+- Updated `SecurityConfig` to allow Warehouse Manager and Auditor access to specific admin endpoints.
+
 ## [0.7.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Units and Product Packages implementation (Iteration 7).

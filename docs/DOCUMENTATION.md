@@ -21,6 +21,10 @@
 - `PUT /api/admin/products/{id}`: Updates an existing product by ID (requires `ROLE_ADMIN` role, returns `ProductResponse`).
 - `POST /api/admin/products/{id}/packages`: Adds a new package to a product (requires `ROLE_ADMIN` role, returns `ProductPackageResponse`).
 - `GET /api/admin/products/{id}/packages`: Returns all packages for a specific product (requires `ROLE_ADMIN` role).
+- `POST /api/admin/warehouses`: Creates a new warehouse (requires `ROLE_ADMIN` role).
+- `PUT /api/admin/warehouses/{id}`: Updates a warehouse (requires `ROLE_ADMIN` role).
+- `GET /api/admin/warehouses`: Returns all warehouses (requires `ROLE_ADMIN`, `ROLE_WAREHOUSE_MANAGER`, or `ROLE_AUDITOR`).
+- `GET /api/admin/warehouses/{id}`: Returns a warehouse by ID (requires `ROLE_ADMIN`, `ROLE_WAREHOUSE_MANAGER`, or `ROLE_AUDITOR`).
 
 ### Employee
 - `GET /api/employees/me`: Returns details of the currently authenticated employee (requires any employee role).
