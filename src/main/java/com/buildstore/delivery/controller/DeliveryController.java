@@ -5,6 +5,7 @@ import com.buildstore.delivery.model.Shipment;
 import com.buildstore.delivery.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +17,8 @@ public class DeliveryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ROLE_WAREHOUSE_MANAGER', 'ROLE_ADMIN')")
     public Shipment createShipment(@RequestBody ShipmentRequest request) {
-        // Will implement logic
-        return null; 
+        return deliveryService.createShipment(request);
     }
 }

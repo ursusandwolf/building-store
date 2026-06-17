@@ -40,4 +40,25 @@ public class ReservationService {
         reservation.setReservedAt(Instant.now());
         reservationRepository.save(reservation);
     }
+
+    @Transactional
+    public void consumeReservation(Long reservationId, Long shipmentId) {
+        StockReservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new com.buildstore.common.exception.ResourceNotFoundException("Reservation not found"));
+        
+        if (reservation.getStatus() != ReservationStatus.ACTIVE) {
+            throw new IllegalArgumentException("Reservation is not active");
+        }
+        
+        inventoryService.consumeReservedStock(
+                reservation.getProduct().getId(),
+                reservation.getWarehouse().getId(),
+                reservation.getQuantity(),
+                shipmentId
+        );
+        
+        reservation.setStatus(ReservationStatus.CONSUMED);
+        reservation.setReleasedAt(Instant.now());
+        reservationRepository.save(reservation);
+    }
 }

@@ -4,6 +4,7 @@ import com.buildstore.common.exception.ResourceNotFoundException;
 import com.buildstore.inventory.dto.StockAdjustmentRequest;
 import com.buildstore.inventory.model.StockItem;
 import com.buildstore.inventory.model.StockMovement;
+import com.buildstore.inventory.model.StockMovementType;
 import com.buildstore.inventory.repository.StockItemRepository;
 import com.buildstore.inventory.repository.StockMovementRepository;
 import com.buildstore.product.model.Product;
@@ -62,6 +63,31 @@ public class InventoryService {
         stockItem.setReservedQuantity(stockItem.getReservedQuantity().subtract(quantity));
         stockItem.setAvailableQuantity(stockItem.getAvailableQuantity().add(quantity));
         stockItemRepository.save(stockItem);
+    }
+
+    @Transactional
+    public void consumeReservedStock(Long productId, Long warehouseId, BigDecimal quantity, Long shipmentId) {
+        StockItem stockItem = stockItemRepository.findByProductIdAndWarehouseId(productId, warehouseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock item not found"));
+
+        if (stockItem.getReservedQuantity().compareTo(quantity) < 0) {
+            throw new IllegalArgumentException("Insufficient reserved stock");
+        }
+
+        stockItem.setReservedQuantity(stockItem.getReservedQuantity().subtract(quantity));
+        stockItemRepository.save(stockItem);
+
+        StockMovement movement = new StockMovement();
+        movement.setProduct(stockItem.getProduct());
+        movement.setWarehouse(stockItem.getWarehouse());
+        movement.setType(StockMovementType.SALES_SHIPMENT);
+        movement.setQuantity(quantity.negate());
+        movement.setUnit(stockItem.getProduct().getBaseUnit());
+        movement.setBalanceAfter(stockItem.getAvailableQuantity());
+        movement.setReferenceType("SHIPMENT");
+        movement.setReferenceId(shipmentId);
+        movement.setReason("Shipment consumption");
+        stockMovementRepository.save(movement);
     }
 
     @Transactional
