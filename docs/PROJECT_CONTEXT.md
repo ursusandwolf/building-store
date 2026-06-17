@@ -21,32 +21,11 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 11: Goods receipt - COMPLETED.
 - Iteration 12: Price lists - COMPLETED.
 - Iteration 13: Discounts - COMPLETED.
-- Refactored core JPA entities to use Lombok annotations (@Getter, @Setter, @NoArgsConstructor, @AllArgsConstructor) and removed manual boilerplate.
+- Iteration 14: Sales orders - COMPLETED.
+- Iteration 15: Audit module - COMPLETED.
+- Iteration 16: Accounting module with Audit integration - COMPLETED.
 - Package refactored to `com.buildstore`.
-
-- `User` entity renamed to `AppUser`.
-- Customer registration implemented with DTO validation.
-- JWT authentication implemented (stateless).
-- Enabled method security with `@EnableMethodSecurity`.
-- Secured admin `/api/admin/**` and employee `/api/employees/**` endpoints with `@PreAuthorize`.
-- Product and product category tables defined with Liquibase, and seed categories populated.
-- Pre-fetching with `@EntityGraph` used to prevent N+1 query problems in ProductRepository.
-- Catalog endpoints implemented with proper validations and access controls.
-- Product packages and units implemented with admin and catalog endpoints.
-- Proper mapping of boolean fields in product packages (defaultForSale, defaultForPurchase).
-- Warehouse management implemented with restricted access (Admin, Warehouse Manager, Auditor).
-- Inventory models (StockItem, StockMovement) and service (InventoryService) implemented.
-- Supplier and PurchaseOrder entities/API implemented with role-based access.
-- Goods receipt processing implemented with idempotent stock adjustments.
-- Price list management implemented with server-side price selection (active/valid periods).
-- Discount policy implemented with deterministic priority-based application.
 - All tests passing.
 
 ## Pending Items
-- Iteration 14: Sales order draft (implemented).
-- Iteration 15: Audit module (implemented).
-- All tests passing.
-
-## Pending Items
-- Audit log integration for other critical operations.
-...
+- Final system validation and cleanup.

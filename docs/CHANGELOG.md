@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.16.0-SNAPSHOT] - 2026-06-17
+### Added
+- Finalized Accounting module with Audit integration (Iteration 16).
+- Integrated `AuditService` into `AccountingService` for `Invoice` creation and `AccountingEntry` recording.
+
 ## [0.15.0-SNAPSHOT] - 2026-06-16
 ### Added
 - Audit module implementation (Iteration 15).
