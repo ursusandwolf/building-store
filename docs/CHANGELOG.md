@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.0-SNAPSHOT] - 2026-06-17
+### Added
+- ReturnOrder module implementation (Iteration 19).
+- `ReturnOrder`, `ReturnOrderLine` entities, repository, service and controller.
+- Liquibase migration `v019-create-return-orders.xml`.
+
 ## [0.18.0-SNAPSHOT] - 2026-06-17
 ### Added
 - Delivery module implementation (Iteration 18).

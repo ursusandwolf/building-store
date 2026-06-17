@@ -1,0 +1,44 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="v019-create-return-orders" author="alex">
+        <createTable tableName="return_orders">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sales_order_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_return_orders_sales_order" references="sales_orders(id)"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="return_order_lines">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="return_order_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_return_order_lines_return_order" references="return_orders(id)"/>
+            </column>
+            <column name="sales_order_line_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_return_order_lines_sales_order_line" references="sales_order_lines(id)"/>
+            </column>
+            <column name="quantity" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

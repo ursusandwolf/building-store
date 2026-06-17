@@ -22,4 +22,6 @@
     <include file="db/changelog/migrations/v015-create-audit-events.xml"/>
     <include file="db/changelog/migrations/v016-create-accounting.xml"/>
     <include file="db/changelog/migrations/v017-create-system-user.xml"/>
+    <include file="db/changelog/migrations/v018-create-shipments.xml"/>
+    <include file="db/changelog/migrations/v019-create-return-orders.xml"/>
     </databaseChangeLog>
