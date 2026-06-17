@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.0-SNAPSHOT] - 2026-06-17
+### Added
+- Delivery module implementation (Iteration 18).
+- `Shipment` and `ShipmentLine` JPA entities.
+- `ShipmentRepository`, `DeliveryService` and `DeliveryController`.
+- Liquibase migration `v018-create-shipments.xml`.
+- Integrated stock consumption into `InventoryService` and `ReservationService` to support delivery.
+
 ## [0.17.0-SNAPSHOT] - 2026-06-17
 ### Added
 - Dedicated SYSTEM user implementation (`v017-create-system-user.xml` and `SystemUserProvider`).
