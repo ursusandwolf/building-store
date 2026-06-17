@@ -24,6 +24,7 @@ Educational project building a backend for a building materials store with Sprin
 - Iteration 14: Sales orders - COMPLETED.
 - Iteration 15: Audit module - COMPLETED.
 - Iteration 16: Accounting module with Audit integration - COMPLETED.
+- Iteration 17: SYSTEM user for audit logs - COMPLETED.
 - Package refactored to `com.buildstore`.
 - All tests passing.
 

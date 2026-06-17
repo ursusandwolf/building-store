@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0-SNAPSHOT] - 2026-06-17
+### Added
+- Dedicated SYSTEM user implementation (`v017-create-system-user.xml` and `SystemUserProvider`).
+### Changed
+- Propagated SYSTEM user to `SalesOrderService` and `PaymentService` for audit integrity.
+- Removed hardcoded "SYSTEM" strings from core services.
+
 ## [0.16.0-SNAPSHOT] - 2026-06-17
 ### Added
 - Finalized Accounting module with Audit integration (Iteration 16).

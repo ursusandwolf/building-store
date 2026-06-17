@@ -1,16 +1,19 @@
 package com.buildstore.payment.service;
 
+import com.buildstore.accounting.service.AccountingService;
 import com.buildstore.common.exception.ResourceNotFoundException;
 import com.buildstore.order.model.SalesOrder;
 import com.buildstore.order.repository.SalesOrderRepository;
 import com.buildstore.payment.model.*;
 import com.buildstore.payment.repository.PaymentLedgerEntryRepository;
 import com.buildstore.payment.repository.PaymentRepository;
+import com.buildstore.security.service.SystemUserProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 @Service
 public class PaymentService {
@@ -18,13 +21,19 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentLedgerEntryRepository ledgerRepository;
     private final SalesOrderRepository orderRepository;
+    private final AccountingService accountingService;
+    private final SystemUserProvider systemUserProvider;
 
     public PaymentService(PaymentRepository paymentRepository,
                           PaymentLedgerEntryRepository ledgerRepository,
-                          SalesOrderRepository orderRepository) {
+                          SalesOrderRepository orderRepository,
+                          AccountingService accountingService,
+                          SystemUserProvider systemUserProvider) {
         this.paymentRepository = paymentRepository;
         this.ledgerRepository = ledgerRepository;
         this.orderRepository = orderRepository;
+        this.accountingService = accountingService;
+        this.systemUserProvider = systemUserProvider;
     }
 
     @Transactional
@@ -54,7 +63,19 @@ public class PaymentService {
         entry.setAmount(amount);
         entry.setCurrency(order.getCurrency());
         entry.setBalanceAfter(order.getTotalAmount().subtract(amount)); // Simplified
-        entry.setCreatedBy("SYSTEM"); 
+        entry.setCreatedBy(systemUserProvider.getSystemUser().getEmail()); 
         ledgerRepository.save(entry);
+        // Record Accounting Entry for Payment
+        accountingService.recordEntry(
+                com.buildstore.accounting.model.AccountingEntryType.PAYMENT_RECEIVED,
+                "CASH_OR_BANK",
+                "ACCOUNTS_RECEIVABLE",
+                amount,
+                order.getCurrency(),
+                "PAYMENT",
+                java.util.UUID.nameUUIDFromBytes(payment.getId().toString().getBytes()),
+                "Payment received for order " + orderId,
+                systemUserProvider.getSystemUser().getEmail()
+        );
     }
 }
