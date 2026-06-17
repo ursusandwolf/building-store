@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet author="gemini" id="v017-create-system-user">
+        <sql>
+            INSERT INTO users (email, password_hash, status, created_at, version)
+            VALUES ('system@buildstore.com', '$2a$10$eX.7s7v5e2mZ5f7G4eG6j.zH7J9K8eF3C5gB4aG2bC1dF0eA9qZ1K', 'ACTIVE', CURRENT_TIMESTAMP, 0);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

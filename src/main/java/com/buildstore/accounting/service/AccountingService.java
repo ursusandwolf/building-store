@@ -7,6 +7,7 @@ import com.buildstore.accounting.repository.AccountingEntryRepository;
 import com.buildstore.accounting.repository.InvoiceRepository;
 import com.buildstore.audit.model.AuditEvent;
 import com.buildstore.audit.service.AuditService;
+import com.buildstore.security.service.SystemUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class AccountingService {
     private final InvoiceRepository invoiceRepository;
     private final AccountingEntryRepository accountingEntryRepository;
     private final AuditService auditService;
+    private final SystemUserProvider systemUserProvider;
 
     @Transactional
     public void createDraftInvoice(SalesOrder order) {
@@ -62,7 +64,8 @@ public class AccountingService {
         Invoice savedInvoice = invoiceRepository.save(invoice);
         
         auditService.logEvent(AuditEvent.builder()
-                .actorType("SYSTEM_OR_USER")
+                .actorType("USER")
+                .actorId(systemUserProvider.getSystemUser().getId())
                 .action("INVOICE_CREATED")
                 .subjectType("INVOICE")
                 .reason("Invoice created: " + savedInvoice.getId() + " for order " + order.getId())
@@ -97,7 +100,8 @@ public class AccountingService {
         AccountingEntry savedEntry = accountingEntryRepository.save(entry);
         
         auditService.logEvent(AuditEvent.builder()
-                .actorType("USER_OR_SYSTEM")
+                .actorType("USER")
+                .actorId(systemUserProvider.getSystemUser().getId())
                 .action("ACCOUNTING_ENTRY_RECORDED")
                 .subjectType("ACCOUNTING_ENTRY")
                 .reason("Entry recorded: " + savedEntry.getId() + ". Description: " + description)
