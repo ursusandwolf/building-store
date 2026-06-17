@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.20.0-SNAPSHOT] - 2026-06-17
+### Added
+- Report module implementation (Iteration 20).
+- `ReportService` and `ReportController` to expose basic sales and inventory reports.
+
 ## [0.19.0-SNAPSHOT] - 2026-06-17
 ### Added
 - ReturnOrder module implementation (Iteration 19).
