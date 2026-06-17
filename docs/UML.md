@@ -1,9 +1,35 @@
 # UML Diagrams
 
-## Iteration 0: Package Structure
+## Iteration 17: Package Structure
 ```text
 com.buildstore
 ├── BuildStoreApplication
+├── accounting
+│   ├── controller
+│   │   └── InvoiceController
+│   ├── dto
+│   │   ├── InvoiceLineResponse
+│   │   └── InvoiceResponse
+│   ├── mapper
+│   │   └── InvoiceMapper
+│   ├── model
+│   │   ├── AccountingEntry
+│   │   ├── AccountingEntryType
+│   │   ├── Invoice
+│   │   ├── InvoiceLine
+│   │   └── InvoiceStatus
+│   ├── repository
+│   │   ├── AccountingEntryRepository
+│   │   └── InvoiceRepository
+│   └── service
+│       └── AccountingService
+├── audit
+│   ├── model
+│   │   └── AuditEvent
+│   ├── repository
+│   │   └── AuditEventRepository
+│   └── service
+│       └── AuditService
 ├── common
 │   ├── api
 │   │   └── HealthController
@@ -11,7 +37,9 @@ com.buildstore
 │   │   └── PrivateHelloController
 │   └── exception
 │       ├── ErrorResponse
-│       └── GlobalExceptionHandler
+│       ├── GlobalExceptionHandler
+│       ├── RegistrationException
+│       └── ResourceNotFoundException
 ├── customer
 │   ├── model
 │   │   └── Customer
@@ -20,99 +48,6 @@ com.buildstore
 ├── employee
 │   └── controller
 │       └── EmployeeController
-├── product
-│   ├── controller
-│   │   ├── CatalogController
-│   │   └── AdminProductController
-│   ├── dto
-│   │   ├── ProductRequest
-│   │   ├── ProductResponse
-│   │   ├── ProductPackageRequest
-│   │   └── ProductPackageResponse
-│   ├── mapper
-│   │   └── ProductMapper
-│   ├── model
-│   │   ├── Product
-│   │   ├── ProductCategory
-│   │   ├── ProductPackage
-│   │   ├── ProductStatus
-│   │   └── UnitOfMeasure
-│   ├── repository
-│   │   ├── ProductRepository
-│   │   ├── ProductCategoryRepository
-│   │   └── ProductPackageRepository
-│   └── service
-│       └── ProductService
-├── warehouse
-│   ├── controller
-│   │   └── AdminWarehouseController
-│   ├── dto
-│   │   ├── WarehouseRequest
-│   │   └── WarehouseResponse
-│   ├── mapper
-│   │   └── WarehouseMapper
-│   ├── model
-│   │   └── Warehouse
-│   ├── repository
-│   │   └── WarehouseRepository
-│   └── service
-│       └── WarehouseService
-├── supplier
-│   ├── controller
-│   │   └── AdminSupplierController
-│   ├── dto
-│   │   ├── SupplierRequest
-│   │   └── SupplierResponse
-│   ├── mapper
-│   │   └── SupplierMapper
-│   ├── model
-│   │   └── Supplier
-│   ├── repository
-│   │   └── SupplierRepository
-│   └── service
-│       └── SupplierService
-├── purchase
-│   ├── controller
-│   │   ├── AdminPurchaseOrderController
-│   │   └── AdminGoodsReceiptController
-│   ├── dto
-│   │   ├── PurchaseOrderRequest
-│   │   ├── PurchaseOrderLineRequest
-│   │   ├── PurchaseOrderResponse
-│   │   ├── PurchaseOrderLineResponse
-│   │   ├── GoodsReceiptRequest
-│   │   └── GoodsReceiptLineRequest
-│   ├── mapper
-│   │   └── PurchaseOrderMapper
-│   ├── model
-│   │   ├── PurchaseOrder
-│   │   ├── PurchaseOrderLine
-│   │   └── PurchaseOrderStatus
-│   ├── repository
-│   │   └── PurchaseOrderRepository
-│   └── service
-│       ├── PurchaseOrderService
-│       └── GoodsReceiptService
-├── pricing
-│   ├── controller
-│   │   ├── PriceListController
-│   │   └── CatalogDiscountController
-│   ├── dto
-│   │   ├── PriceListRequest
-│   │   ├── PriceListItemRequest
-│   │   ├── PriceResponse
-│   │   └── DiscountRequest
-│   ├── model
-│   │   ├── PriceList
-│   │   ├── PriceListItem
-│   │   └── Discount
-│   ├── repository
-│   │   ├── PriceListRepository
-│   │   ├── PriceListItemRepository
-│   │   └── DiscountRepository
-│   └── service
-│       ├── PriceListService
-│       └── DiscountService
 ├── inventory
 │   ├── controller
 │   │   └── AdminInventoryController
@@ -120,39 +55,87 @@ com.buildstore
 │   │   ├── StockAdjustmentRequest
 │   │   └── StockMovementResponse
 │   ├── model
+│   │   ├── ReservationStatus
 │   │   ├── StockItem
 │   │   ├── StockMovement
-│   │   └── StockMovementType
+│   │   ├── StockMovementType
+│   │   └── StockReservation
 │   ├── repository
 │   │   ├── StockItemRepository
-│   │   └── StockMovementRepository
+│   │   ├── StockMovementRepository
+│   │   └── StockReservationRepository
 │   └── service
-│       └── InventoryService
+│       ├── InventoryService
+│       └── ReservationService
+├── order
+│   ├── controller
+│   │   └── OrderController
+│   ├── dto
+│   ├── mapper
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── SalesOrderService
+├── payment
+│   ├── controller
+│   ├── dto
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── PaymentService
+├── pricing
+│   ├── controller
+│   ├── dto
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── PriceListService
+├── product
+│   ├── controller
+│   ├── dto
+│   ├── mapper
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── ProductService
+├── purchase
+│   ├── controller
+│   ├── dto
+│   ├── mapper
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── PurchaseOrderService
 ├── security
+│   ├── JwtAuthenticationEntryPoint
 │   ├── config
-│   │   └── SecurityConfig
 │   ├── filter
 │   │   └── JwtAuthenticationFilter
-│   ├── service
-│   │   └── JwtService
-│   ├── CustomUserDetailsService
-│   └── JwtAuthenticationEntryPoint
-└── user
+│   └── service
+│       ├── JwtService
+│       └── SystemUserProvider
+├── supplier
+│   ├── controller
+│   ├── dto
+│   ├── mapper
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── SupplierService
+├── user
+│   ├── controller
+│   ├── dto
+│   ├── mapper
+│   ├── model
+│   ├── repository
+│   └── service
+│       └── UserService
+└── warehouse
     ├── controller
-    │   ├── AuthController
-    │   └── AdminUserController
     ├── dto
-    │   ├── RegisterRequest
-    │   ├── LoginRequest
-    │   └── AuthResponse
+    ├── mapper
     ├── model
-    │   ├── AppUser
-    │   ├── Role
-    │   ├── RoleName
-    │   └── UserStatus
     ├── repository
-    │   ├── RoleRepository
-    │   └── UserRepository
     └── service
-        └── UserService
+        └── WarehouseService
 ```
