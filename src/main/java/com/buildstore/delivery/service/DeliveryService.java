@@ -59,7 +59,7 @@ public class DeliveryService {
             return line;
         }).collect(Collectors.toList());
         
-        shipment.setLines(lines);
+        shipment.getLines().addAll(lines);
         shipment.setStatus(ShipmentStatus.READY_FOR_PICKUP);
         
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

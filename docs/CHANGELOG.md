@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0-SNAPSHOT] - 2026-06-17
+### Added
+- Project User Manual created in `docs/USER_MANUAL.md`.
+- Infrastructure setup with `Dockerfile` and `docker-compose.yml`.
+### Changed
+- Finalized system documentation and cleaned up project context.
+
 ## [0.20.0-SNAPSHOT] - 2026-06-17
 ### Added
 - Report module implementation (Iteration 20).

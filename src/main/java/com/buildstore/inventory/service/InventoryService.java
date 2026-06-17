@@ -87,6 +87,7 @@ public class InventoryService {
         movement.setReferenceType("SHIPMENT");
         movement.setReferenceId(shipmentId);
         movement.setReason("Shipment consumption");
+        movement.setCreatedBy("SYSTEM");
         stockMovementRepository.save(movement);
     }
 

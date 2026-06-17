@@ -28,7 +28,7 @@ public class ReportService {
         return stockItemRepository.findAll().stream()
                 .collect(Collectors.groupingBy(
                         item -> item.getProduct().getName(),
-                        Collectors.reducing(BigDecimal.ZERO, item -> item.getQuantity(), BigDecimal::add)
+                        Collectors.reducing(BigDecimal.ZERO, item -> item.getAvailableQuantity(), BigDecimal::add)
                 ));
     }
 }

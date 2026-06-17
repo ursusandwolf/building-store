@@ -2,7 +2,13 @@ package com.buildstore.order.model;
 
 public enum SalesOrderStatus {
     DRAFT,
-    SUBMITTED,
-    COMPLETED,
-    CANCELLED
+    PENDING_CONFIRMATION,
+    CONFIRMED,
+    RESERVED,
+    PARTIALLY_PAID,
+    PAID,
+    PARTIALLY_SHIPPED,
+    SHIPPED,
+    CANCELLED,
+    RETURNED
 }

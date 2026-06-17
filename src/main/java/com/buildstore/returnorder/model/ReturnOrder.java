@@ -33,6 +33,7 @@ public class ReturnOrder {
     @Column(nullable = false)
     private ReturnOrderStatus status;
 
+    @Builder.Default
     @OneToMany(mappedBy = "returnOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReturnOrderLine> lines = new ArrayList<>();
 
