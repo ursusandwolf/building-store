@@ -1,5 +1,6 @@
 package com.buildstore.order.service;
 
+import com.buildstore.accounting.service.AccountingService;
 import com.buildstore.audit.model.AuditEvent;
 import com.buildstore.audit.service.AuditService;
 import com.buildstore.common.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import com.buildstore.order.repository.SalesOrderLineRepository;
 import com.buildstore.order.repository.SalesOrderRepository;
 import com.buildstore.pricing.service.PriceListService;
 import com.buildstore.product.repository.ProductRepository;
+import com.buildstore.security.service.SystemUserProvider;
 import com.buildstore.user.repository.UserRepository;
 import com.buildstore.warehouse.repository.WarehouseRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +39,8 @@ public class SalesOrderService {
     private final ReservationService reservationService;
     private final WarehouseRepository warehouseRepository;
     private final AuditService auditService;
+    private final AccountingService accountingService;
+    private final SystemUserProvider systemUserProvider;
 
     public SalesOrderService(SalesOrderRepository salesOrderRepository,
                             SalesOrderLineRepository salesOrderLineRepository,
@@ -46,7 +50,9 @@ public class SalesOrderService {
                             SalesOrderMapper salesOrderMapper,
                             ReservationService reservationService,
                             WarehouseRepository warehouseRepository,
-                            AuditService auditService) {
+                            AuditService auditService,
+                            AccountingService accountingService,
+                            SystemUserProvider systemUserProvider) {
         this.salesOrderRepository = salesOrderRepository;
         this.salesOrderLineRepository = salesOrderLineRepository;
         this.productRepository = productRepository;
@@ -56,6 +62,8 @@ public class SalesOrderService {
         this.reservationService = reservationService;
         this.warehouseRepository = warehouseRepository;
         this.auditService = auditService;
+        this.accountingService = accountingService;
+        this.systemUserProvider = systemUserProvider;
     }
 
     @Transactional
@@ -128,5 +136,39 @@ public class SalesOrderService {
         return salesOrderRepository.findByIdAndCustomerEmail(id, email)
                 .map(salesOrderMapper::toResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found or access denied"));
+    }
+
+    @Transactional
+    public void confirmOrder(Long orderId) {
+        SalesOrder order = salesOrderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        
+        order.setStatus(SalesOrderStatus.CONFIRMED);
+        salesOrderRepository.save(order);
+        
+        // Create Invoice
+        accountingService.createDraftInvoice(order);
+        
+        // Record Accounting Entry for Sale
+        accountingService.recordEntry(
+                com.buildstore.accounting.model.AccountingEntryType.SALE_REVENUE,
+                "ACCOUNTS_RECEIVABLE",
+                "SALES_REVENUE",
+                order.getTotalAmount(),
+                order.getCurrency(),
+                "SALES_ORDER",
+                java.util.UUID.nameUUIDFromBytes(order.getId().toString().getBytes()),
+                "Sale of goods for order " + order.getId(),
+                systemUserProvider.getSystemUser().getEmail()
+        );
+        
+        auditService.logEvent(AuditEvent.builder()
+                .actorType("USER")
+                .actorId(systemUserProvider.getSystemUser().getId())
+                .action("SALES_ORDER_CONFIRMED")
+                .subjectType("SALES_ORDER")
+                .subjectId(order.getId())
+                .reason("Order confirmed via API")
+                .build());
     }
 }
